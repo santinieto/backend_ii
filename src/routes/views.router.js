@@ -48,4 +48,13 @@ viewsRouter.get("/profile", (req, res) => {
     }
 });
 
+viewsRouter.get("/control-panel", (req, res) => {
+    try {
+        res.render("control_panel");
+    } catch (error) {
+        console.log(error);
+        res.status(500).render("error");
+    }
+});
+
 export default viewsRouter;

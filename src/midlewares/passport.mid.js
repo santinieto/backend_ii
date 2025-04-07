@@ -1,5 +1,6 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
+import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 import { usersManager } from "../data/manager.mongo.js";
 import { createHash, compareHash } from "../helpers/hash.helper.js";
 import { createToken } from "../helpers/token.helper.js";
@@ -26,12 +27,13 @@ passport.use(
                 }
 
                 /* Si no existe, lo creo */
-                const { first_name, last_name } = req.body;
+                const { first_name, last_name, role } = req.body;
                 const newUser = {
                     first_name,
                     last_name,
                     email,
                     password: createHash(password),
+                    role: role.toUpperCase() || "USER",
                 };
                 const result = await usersManager.createOne(newUser);
 
@@ -85,6 +87,63 @@ passport.use(
                 req.token = token; // Agrego el token al request para usarlo en el controlador
 
                 /* Sigo con la ejecucion */
+                return done(null, user);
+            } catch (error) {
+                return done(error);
+            }
+        }
+    )
+);
+
+passport.use(
+    "current",
+    new JWTStrategy(
+        {
+            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            secretOrKey: process.env.JWT_SECRET,
+        },
+        async (jwtPayload, done) => {
+            try {
+                const user = await usersManager.readBy({
+                    _id: jwtPayload.user_id,
+                });
+                if (!user) {
+                    const error = new Error("Usuario no encontrado");
+                    error.status = 401;
+                    throw error;
+                }
+                return done(null, user);
+            } catch (error) {
+                return done(error);
+            }
+        }
+    )
+);
+
+passport.use(
+    "admin",
+    new JWTStrategy(
+        {
+            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            secretOrKey: process.env.JWT_SECRET,
+        },
+        async (jwtPayload, done) => {
+            try {
+                const user = await usersManager.readBy({
+                    _id: jwtPayload.user_id,
+                });
+                if (!user) {
+                    const error = new Error("Usuario no encontrado");
+                    error.status = 401;
+                    throw error;
+                }
+                console.log(user.role.toUpperCase());
+                console.log("admin".toUpperCase());
+                if (user.role.toUpperCase() !== "admin".toUpperCase()) {
+                    const error = new Error("No tiene permisos para acceder");
+                    error.status = 403;
+                    throw error;
+                }
                 return done(null, user);
             } catch (error) {
                 return done(error);

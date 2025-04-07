@@ -57,6 +57,20 @@ const profile = async (req, res, next) => {
     }
 };
 
+const controlPanel = async (req, res, next) => {
+    try {
+        const user = req.user;
+        res.status(200).json({
+            response: user,
+            method: req.method,
+            url: req.originalUrl,
+            status: "success",
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
 authRouter.post(
     "/register",
     passport.authenticate("register", { session: false }), // Implementamos la estrategia de registro
@@ -69,7 +83,23 @@ authRouter.post(
     login
 );
 
-authRouter.get("/profile", isUser, profile);
-authRouter.get("/logout", isUser, logout); // Implementamos la estrategia de logout
+authRouter.get(
+    "/profile",
+    passport.authenticate("current", { session: false }), // Implementamos la estrategia de JWT
+    profile
+);
+
+authRouter.get(
+    "/logout",
+    passport.authenticate("current", { session: false }), // Implementamos la estrategia de JWT
+    logout
+);
+
+authRouter.get(
+    "/control-panel",
+    passport.authenticate("admin", { session: false }), // Implementamos la estrategia de JWT
+    isUser,
+    controlPanel
+);
 
 export default authRouter;
