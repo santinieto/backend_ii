@@ -1,6 +1,5 @@
 import { response, Router } from "express";
-import passport from "../../midlewares/passport.mid.js"; // Importamos el middleware de passport
-import { isUser } from "../../midlewares/is_user.mid.js";
+import passportCallback from "../../midlewares/passport_callback.mid.js"; // Importamos el middleware de passport
 
 const authRouter = Router();
 
@@ -78,31 +77,31 @@ const controlPanel = async (req, res, next) => {
 
 authRouter.post(
     "/register",
-    passport.authenticate("register", { session: false }), // Implementamos la estrategia de registro
+    passportCallback("register"), // Implementamos la estrategia de registro
     register
 );
 
 authRouter.post(
     "/login",
-    passport.authenticate("login", { session: false }), // Implementamos la estrategia de login
+    passportCallback("login"), // Implementamos la estrategia de login
     login
 );
 
 authRouter.get(
     "/profile",
-    passport.authenticate("current", { session: false }), // Implementamos la estrategia de JWT
+    passportCallback("current"), // Implementamos la estrategia de JWT
     profile
 );
 
 authRouter.get(
     "/logout",
-    passport.authenticate("current", { session: false }), // Implementamos la estrategia de JWT
+    passportCallback("current"), // Implementamos la estrategia de JWT
     logout
 );
 
 authRouter.get(
     "/control-panel",
-    passport.authenticate("admin", { session: false }), // Implementamos la estrategia de JWT
+    passportCallback("admin"), // Implementamos la estrategia de JWT
     controlPanel
 );
 

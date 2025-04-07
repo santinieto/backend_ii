@@ -19,11 +19,10 @@ passport.use(
                 /* Verifico si el usuario ya existe */
                 const user = await usersManager.readBy({ email });
                 if (user) {
-                    const error = new Error(
-                        "El usuario ya existe en la base de datos"
-                    );
-                    error.status = 401;
-                    throw error;
+                    return done(null, null, {
+                        message: "El usuario ya existe en la base de datos",
+                        status: 400,
+                    });
                 }
 
                 /* Si no existe, lo creo */
@@ -64,17 +63,19 @@ passport.use(
                 /* Busco el usuario */
                 const user = await usersManager.readBy({ email });
                 if (!user) {
-                    const error = new Error("Usuario no encontrado");
-                    error.status = 401;
-                    throw error;
+                    return done(null, null, {
+                        message: "Usuario no encontrado",
+                        status: 401,
+                    });
                 }
                 // console.log(user);
 
                 /* Verifico la contraseña */
                 if (!compareHash(password, user.password)) {
-                    const error = new Error("Usuario o contraseña incorrectos");
-                    error.status = 401;
-                    throw error;
+                    return done(null, null, {
+                        message: "Usuario o contraseña incorrectos",
+                        status: 401,
+                    });
                 }
                 // console.log("Contraseña correcta");
 
@@ -110,9 +111,10 @@ passport.use(
                     _id: jwtPayload.user_id,
                 });
                 if (!user) {
-                    const error = new Error("Usuario no encontrado");
-                    error.status = 401;
-                    throw error;
+                    return done(null, null, {
+                        message: "Usuario no encontrado",
+                        status: 401,
+                    });
                 }
                 return done(null, user);
             } catch (error) {
@@ -137,15 +139,17 @@ passport.use(
                     _id: jwtPayload.user_id,
                 });
                 if (!user) {
-                    const error = new Error("Usuario no encontrado");
-                    error.status = 401;
-                    throw error;
+                    return done(null, null, {
+                        message: "Usuario no encontrado",
+                        status: 401,
+                    });
                 }
-                
+
                 if (user.role.toUpperCase() !== "admin".toUpperCase()) {
-                    const error = new Error("No tiene permisos para acceder");
-                    error.status = 403;
-                    throw error;
+                    return done(null, null, {
+                        message: "No tiene permisos para acceder",
+                        status: 403,
+                    });
                 }
                 return done(null, user);
             } catch (error) {
