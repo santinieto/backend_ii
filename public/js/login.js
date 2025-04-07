@@ -26,7 +26,7 @@ document.querySelector("#login-form").addEventListener("submit", async (e) => {
 
         // Redirigir al usuario a la pagina de inicio
         alert("Logeo exitoso!");
-        window.location.href = "/";
+        window.location.href = "/profile";
     } else {
         alert(result.error);
     }
