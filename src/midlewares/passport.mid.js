@@ -99,7 +99,9 @@ passport.use(
     "current",
     new JWTStrategy(
         {
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            jwtFromRequest: ExtractJwt.fromExtractors([
+                (req) => req?.cookies?.token,
+            ]),
             secretOrKey: process.env.JWT_SECRET,
         },
         async (jwtPayload, done) => {
@@ -124,7 +126,9 @@ passport.use(
     "admin",
     new JWTStrategy(
         {
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            jwtFromRequest: ExtractJwt.fromExtractors([
+                (req) => req?.cookies?.token,
+            ]),
             secretOrKey: process.env.JWT_SECRET,
         },
         async (jwtPayload, done) => {
@@ -137,8 +141,7 @@ passport.use(
                     error.status = 401;
                     throw error;
                 }
-                console.log(user.role.toUpperCase());
-                console.log("admin".toUpperCase());
+                
                 if (user.role.toUpperCase() !== "admin".toUpperCase()) {
                     const error = new Error("No tiene permisos para acceder");
                     error.status = 403;

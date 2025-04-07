@@ -19,12 +19,17 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
     try {
-        res.status(200).json({
-            response: req.token, // Respondemos con el token de acceso
-            method: req.method,
-            url: req.originalUrl,
-            status: "success",
-        });
+        res.cookie("token", req.token, {
+            maxAge: 1000 * 60 * 60, // 1 hora
+            httpOnly: true, // Solo el servidor puede acceder a la cookie
+        })
+            .status(200)
+            .json({
+                response: req.token, // Respondemos con el usuario de acceso
+                method: req.method,
+                url: req.originalUrl,
+                status: "success",
+            });
     } catch (error) {
         next(error);
     }
@@ -32,7 +37,7 @@ const login = async (req, res, next) => {
 
 const logout = async (req, res, next) => {
     try {
-        res.status(200).json({
+        res.clearCookie("token").status(200).json({
             response: "Logout exitoso!",
             method: req.method,
             url: req.originalUrl,
@@ -69,7 +74,7 @@ const controlPanel = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-}
+};
 
 authRouter.post(
     "/register",
@@ -98,7 +103,6 @@ authRouter.get(
 authRouter.get(
     "/control-panel",
     passport.authenticate("admin", { session: false }), // Implementamos la estrategia de JWT
-    isUser,
     controlPanel
 );
 

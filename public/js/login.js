@@ -22,7 +22,7 @@ document.querySelector("#login-form").addEventListener("submit", async (e) => {
     // Gestiono el resultado
     if (result.status === "success") {
         // Guardar el token en el localStorage
-        localStorage.setItem("token", result.response);
+        // localStorage.setItem("token", result.response);
 
         // Redirigir al usuario a la pagina de inicio
         alert("Logeo exitoso!");
