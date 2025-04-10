@@ -24,12 +24,12 @@ productsRouter.get(
     "/",
     asyncHandler(async (req, res) => {
         const products = await productsManager.readAll();
-        if (response.products === 0) {
+        if (products.length === 0) {
             res.status(404).json({
                 message: "No hay productos disponibles.",
             });
         }
-        res.status(200).res.json(products);
+        res.status(200).json(products);
     })
 );
 
