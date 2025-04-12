@@ -1,5 +1,5 @@
 import { response, Router } from "express";
-import passportCallback from "../../midlewares/passport_callback.mid.js"; // Importamos el middleware de passport
+import passportCallback from "../../middlewares/passport_callback.mid.js"; // Importamos el middleware de passport
 
 const authRouter = Router();
 

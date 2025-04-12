@@ -1,26 +1,10 @@
 import express from "express";
-import mongoose from "mongoose";
 import { cartsManager } from "../../data/managers/carts.mongo.js";
+import { cidParam } from "../../middlewares/params.mid.js";
 
 const cartsRouter = express.Router();
 
-// Middleware para validar ObjectId de MongoDB
-const validateObjectId = (req, res, next) => {
-    const { cid, id } = req.params;
-
-    if (cid && !mongoose.Types.ObjectId.isValid(cid)) {
-        return res
-            .status(400)
-            .json({ message: "El ID del carrito no es un ObjectId válido." });
-    }
-    if (id && !mongoose.Types.ObjectId.isValid(id)) {
-        return res
-            .status(400)
-            .json({ message: "El ID del producto no es un ObjectId válido." });
-    }
-
-    next();
-};
+cartsRouter.param("cid", cidParam);
 
 cartsRouter.post("/create", async (req, res) => {
     try {
@@ -56,11 +40,10 @@ cartsRouter.get("/", async (req, res) => {
             message: "No hay carritos disponibles.",
         });
     }
-    console.log(carts);
     res.status(200).json(carts);
 });
 
-cartsRouter.get("/:cid", validateObjectId, async (req, res) => {
+cartsRouter.get("/:cid", async (req, res) => {
     try {
         const { cid } = req.params;
         const cart = await cartsManager.readById({ _id: cid });
@@ -80,7 +63,7 @@ cartsRouter.get("/:cid", validateObjectId, async (req, res) => {
     }
 });
 
-cartsRouter.post("/add-product", validateObjectId, async (req, res) => {
+cartsRouter.post("/add-product", async (req, res) => {
     try {
         const { cart_id, product_id, quantity } = req.body;
         const result = await cartsManager.addProductToCart(
@@ -107,7 +90,7 @@ cartsRouter.post("/add-product", validateObjectId, async (req, res) => {
     }
 });
 
-cartsRouter.put("/:cid", validateObjectId, async (req, res) => {
+cartsRouter.put("/:cid", async (req, res) => {
     try {
         const { cid } = req.params;
         const { products } = req.body;
@@ -131,7 +114,7 @@ cartsRouter.put("/:cid", validateObjectId, async (req, res) => {
     }
 });
 
-cartsRouter.delete("/:cid", validateObjectId, async (req, res) => {
+cartsRouter.delete("/:cid", async (req, res) => {
     try {
         const { cid } = req.params;
         const deleted = await cartsManager.destroyById(cid);

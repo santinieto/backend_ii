@@ -1,6 +1,6 @@
 import { Router } from "express";
-import mongoose from "mongoose";
 import { productsManager } from "../../data/managers/manager.mongo.js";
+import { pidParam } from "../../middlewares/params.mid.js";
 
 const productsRouter = Router();
 
@@ -9,16 +9,7 @@ const asyncHandler = (fn) => (req, res, next) => {
     Promise.resolve(fn(req, res, next)).catch(next);
 };
 
-// Middleware para validar ObjectId de MongoDB
-const validateObjectId = (req, res, next) => {
-    const { pid } = req.params;
-    if (pid && !mongoose.Types.ObjectId.isValid(pid)) {
-        return res
-            .status(400)
-            .json({ error: "El ID del producto no es un ObjectId válido." });
-    }
-    next();
-};
+productsRouter.param("pid", pidParam);
 
 productsRouter.get(
     "/",
@@ -35,7 +26,6 @@ productsRouter.get(
 
 productsRouter.get(
     "/:pid",
-    validateObjectId,
     asyncHandler(async (req, res) => {
         const { pid } = req.params;
         const product = await productsManager.readById({ _id: pid });
@@ -94,7 +84,6 @@ productsRouter.post(
 
 productsRouter.put(
     "/:pid",
-    validateObjectId,
     asyncHandler(async (req, res) => {
         const updatedProduct = await productsManager.updateById(
             req.params.pid,
@@ -114,7 +103,6 @@ productsRouter.put(
 
 productsRouter.delete(
     "/:pid",
-    validateObjectId,
     asyncHandler(async (req, res) => {
         const deleted = await productsManager.destroyById(req.params.pid);
         if (!deleted) {
