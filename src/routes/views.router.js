@@ -61,12 +61,12 @@ class ViewsRouter extends CustomRouter {
     }
 
     init = () => {
-        this.read("/", home);
-        this.read("/register", register);
-        this.read("/login", login);
-        this.read("/logout", logout);
-        this.read("/profile", profile);
-        this.read("/control-panel", controlPanel);
+        this.read("/", [], home);
+        this.read("/register", [], register);
+        this.read("/login", [], login);
+        this.read("/logout", [], logout);
+        this.read("/profile", [], profile);
+        this.read("/control-panel", [], controlPanel);
     };
 }
 

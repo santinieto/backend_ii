@@ -21,7 +21,7 @@ const logOut = async () => {
             alert("Logout exitoso!");
             window.location.href = "/";
         } else {
-            alert(result.error);
+            alert(result.message);
         }
     } catch (error) {
         console.log(error);

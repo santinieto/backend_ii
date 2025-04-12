@@ -60,11 +60,31 @@ class AuthRouter extends CustomRouter {
     }
 
     init = () => {
-        this.create("/register", passportCallback("register"), register);
-        this.create("/login", passportCallback("login"), login);
-        this.read("/profile", passportCallback("current"), profile);
-        this.read("/logout", passportCallback("current"), logout);
-        this.read("/control-panel", passportCallback("admin"), controlPanel);
+        this.create(
+            "/register",
+            ["public"],
+            passportCallback("register"),
+            register
+        );
+        this.create("/login", ["public"], passportCallback("login"), login);
+        this.read(
+            "/profile",
+            ["user", "admin"],
+            passportCallback("current"),
+            profile
+        );
+        this.read(
+            "/logout",
+            ["public", "admin"],
+            passportCallback("current"),
+            logout
+        );
+        this.read(
+            "/control-panel",
+            ["admin"],
+            passportCallback("admin"),
+            controlPanel
+        );
     };
 }
 

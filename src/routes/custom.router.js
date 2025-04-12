@@ -1,5 +1,6 @@
 import { Router } from "express";
 import setupResponses from "../middlewares/setup_responses.mid.js";
+import setupPolicies from "../middlewares/setup_policies.mid.js";
 
 class CustomRouter {
     constructor() {
@@ -21,20 +22,36 @@ class CustomRouter {
         });
     };
 
-    create = (path, ...cbs) => {
-        this.router.post(path, this.applyMiddleware(cbs));
+    create = (path, policies, ...cbs) => {
+        this.router.post(
+            path,
+            setupPolicies(policies),
+            this.applyMiddleware(cbs)
+        );
     };
 
-    read = (path, ...cbs) => {
-        this.router.get(path, this.applyMiddleware(cbs));
+    read = (path, policies, ...cbs) => {
+        this.router.get(
+            path,
+            setupPolicies(policies),
+            this.applyMiddleware(cbs)
+        );
     };
 
-    update = (path, ...cbs) => {
-        this.router.put(path, this.applyMiddleware(cbs));
+    update = (path, policies, ...cbs) => {
+        this.router.put(
+            path,
+            setupPolicies(policies),
+            this.applyMiddleware(cbs)
+        );
     };
 
-    delete = (path, ...cbs) => {
-        this.router.delete(path, this.applyMiddleware(cbs));
+    delete = (path, policies, ...cbs) => {
+        this.router.delete(
+            path,
+            setupPolicies(policies),
+            this.applyMiddleware(cbs)
+        );
     };
 
     use = (path, ...cbs) => {

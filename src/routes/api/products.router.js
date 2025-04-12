@@ -50,7 +50,7 @@ const createOne = async (req, res) => {
         res.json500("Error al crear el producto");
     }
 
-    res.json201(newProduct);
+    res.json201(newProduct, "Producto creado correctamente.");
 };
 
 const updateOne = async (req, res) => {
@@ -83,11 +83,11 @@ class ProductsRouter extends CustomRouter {
     }
 
     init = () => {
-        this.create("/", passportCallback("admin"), createOne);
-        this.read("/", passportCallback("current"), readAll);
-        this.read("/:pid", passportCallback("current"), readOne);
-        this.update("/:pid", passportCallback("admin"), updateOne);
-        this.delete("/:pid", passportCallback("admin"), deleteOne);
+        this.create("/", ["admin"], createOne);
+        this.read("/", ["public"], readAll);
+        this.read("/:pid", ["public"], readOne);
+        this.update("/:pid", ["admin"], updateOne);
+        this.delete("/:pid", ["admin"], deleteOne);
         this.param("pid", pidParam);
     };
 }
