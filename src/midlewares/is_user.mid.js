@@ -1,5 +1,5 @@
 import { verifyToken } from "../helpers/token.helper.js";
-import { usersManager } from "../data/manager.mongo.js";
+import { usersManager } from "../data/managers/manager.mongo.js";
 
 export const isUser = async (req, res, next) => {
     try {

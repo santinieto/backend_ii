@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
-import { usersManager } from "../data/manager.mongo.js";
+import { usersManager } from "../data/managers/manager.mongo.js";
 import { createHash, compareHash } from "../helpers/hash.helper.js";
 import { createToken } from "../helpers/token.helper.js";
 
