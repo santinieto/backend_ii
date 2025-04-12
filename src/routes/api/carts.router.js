@@ -1,12 +1,13 @@
 import express from "express";
 import { cartsManager } from "../../data/managers/carts.mongo.js";
 import { cidParam } from "../../middlewares/params.mid.js";
+import passportCallback from "../../middlewares/passport_callback.mid.js";
 
 const cartsRouter = express.Router();
 
 cartsRouter.param("cid", cidParam);
 
-cartsRouter.post("/create", async (req, res) => {
+cartsRouter.post("/create", passportCallback("current"), async (req, res) => {
     try {
         const { products } = req.body;
 
@@ -33,7 +34,7 @@ cartsRouter.post("/create", async (req, res) => {
     }
 });
 
-cartsRouter.get("/", async (req, res) => {
+cartsRouter.get("/", passportCallback("admin"), async (req, res) => {
     const carts = await cartsManager.readAll();
     if (carts.length === 0) {
         res.status(404).json({
@@ -43,7 +44,7 @@ cartsRouter.get("/", async (req, res) => {
     res.status(200).json(carts);
 });
 
-cartsRouter.get("/:cid", async (req, res) => {
+cartsRouter.get("/:cid", passportCallback("current"), async (req, res) => {
     try {
         const { cid } = req.params;
         const cart = await cartsManager.readById({ _id: cid });
@@ -63,34 +64,38 @@ cartsRouter.get("/:cid", async (req, res) => {
     }
 });
 
-cartsRouter.post("/add-product", async (req, res) => {
-    try {
-        const { cart_id, product_id, quantity } = req.body;
-        const result = await cartsManager.addProductToCart(
-            cart_id,
-            product_id,
-            quantity
-        );
+cartsRouter.post(
+    "/add-product",
+    passportCallback("current"),
+    async (req, res) => {
+        try {
+            const { cart_id, product_id, quantity } = req.body;
+            const result = await cartsManager.addProductToCart(
+                cart_id,
+                product_id,
+                quantity
+            );
 
-        if (result.status === "error") {
-            return res.status(400).json({
-                message: result.message,
+            if (result.status === "error") {
+                return res.status(400).json({
+                    message: result.message,
+                });
+            }
+
+            res.status(200).json({
+                message: "Producto agregado correctamente.",
+                cart: result.cart,
+            });
+        } catch (error) {
+            res.status(500).json({
+                message: "Error interno del servidor.",
+                error: error.message,
             });
         }
-
-        res.status(200).json({
-            message: "Producto agregado correctamente.",
-            cart: result.cart,
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: "Error interno del servidor.",
-            error: error.message,
-        });
     }
-});
+);
 
-cartsRouter.put("/:cid", async (req, res) => {
+cartsRouter.put("/:cid", passportCallback("current"), async (req, res) => {
     try {
         const { cid } = req.params;
         const { products } = req.body;
@@ -114,7 +119,7 @@ cartsRouter.put("/:cid", async (req, res) => {
     }
 });
 
-cartsRouter.delete("/:cid", async (req, res) => {
+cartsRouter.delete("/:cid", passportCallback("admin"), async (req, res) => {
     try {
         const { cid } = req.params;
         const deleted = await cartsManager.destroyById(cid);
