@@ -1,4 +1,3 @@
-import { Router } from "express";
 import CustomRouter from "../custom.router.js";
 import { productsManager } from "../../data/managers/manager.mongo.js";
 import { pidParam } from "../../middlewares/params.mid.js";
