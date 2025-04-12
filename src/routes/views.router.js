@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { isUser } from "../midlewares/is_user.mid.js";
 
 const viewsRouter = Router();
 

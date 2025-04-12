@@ -5,8 +5,8 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import dbConnect from "./helpers/db_connect.helper.js";
 import appRouter from "./routes/app.router.js";
-import errorHandler from "./midlewares/error_handler.js";
-import pathHandler from "./midlewares/path_handler.mid.js";
+import errorHandler from "./middlewares/error_handler.js";
+import pathHandler from "./middlewares/path_handler.mid.js";
 
 // Variables globabes
 const PORT = 8080;
