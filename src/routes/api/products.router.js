@@ -6,11 +6,9 @@ import passportCallback from "../../middlewares/passport_callback.mid.js";
 const readAll = async (req, res) => {
     const products = await productsManager.readAll();
     if (products.length === 0) {
-        res.status(404).json({
-            message: "No hay productos disponibles.",
-        });
+        res.json404();
     }
-    res.status(200).json(products);
+    res.json200(products);
 };
 
 const readOne = async (req, res) => {
@@ -18,10 +16,10 @@ const readOne = async (req, res) => {
     const product = await productsManager.readById({ _id: pid });
 
     if (!product) {
-        return res.status(404).json({ message: "No se encontro el producto" });
+        res.json404();
     }
 
-    res.status(200).json(product);
+    res.json200(product);
 };
 
 const createOne = async (req, res) => {
@@ -44,21 +42,15 @@ const createOne = async (req, res) => {
     );
 
     if (missingFields.length > 0) {
-        return res.status(400).json({
-            error: "Faltan campos obligatorios.",
-            missingFields,
-        });
+        res.json400();
     }
 
     const newProduct = await productsManager.createOne(req.body);
     if (!newProduct) {
-        return res.status(500).json({ error: "Error al crear el producto" });
+        res.json500("Error al crear el producto");
     }
 
-    res.status(201).json({
-        message: "Producto agregado correctamente.",
-        product: newProduct,
-    });
+    res.json201(newProduct);
 };
 
 const updateOne = async (req, res) => {
@@ -67,29 +59,21 @@ const updateOne = async (req, res) => {
         req.body
     );
     if (!updatedProduct) {
-        return res.status(400).json({
-            error: "Error al actualizar el producto",
-        });
+        res.json400("Error al actualizar el producto");
     }
-    res.status(200).json({
-        message: "Producto actualizado correctamente.",
-        product: updatedProduct,
-    });
+
+    res.json200(updatedProduct, "Producto actualizado correctamente.");
 };
 
 const deleteOne = async (req, res) => {
     const deleted = await productsManager.destroyById({
         _id: req.params.pid,
     });
-    console.log(deleted);
     if (!deleted) {
-        return res.status(404).json({
-            message: "Producto no encontrado",
-        });
+        res.json404();
     }
-    res.json({
-        message: "Producto eliminado correctamente.",
-    });
+
+    res.json200({}, "Producto eliminado correctamente.");
 };
 
 class ProductsRouter extends CustomRouter {
