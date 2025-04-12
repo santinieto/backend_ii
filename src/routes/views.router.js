@@ -1,59 +1,75 @@
-import { Router } from "express";
+import CustomRouter from "./custom.router.js";
 
-const viewsRouter = Router();
-
-viewsRouter.get("/", (req, res) => {
+const home = async (req, res) => {
     try {
         res.render("home");
     } catch (error) {
         console.log(error);
         res.status(500).render("error");
     }
-});
+};
 
-viewsRouter.get("/register", (req, res) => {
+const register = async (req, res) => {
     try {
         res.render("register");
     } catch (error) {
         console.log(error);
         res.status(500).render("error");
     }
-});
+};
 
-viewsRouter.get("/login", (req, res) => {
+const login = async (req, res) => {
     try {
         res.render("login");
     } catch (error) {
         console.log(error);
         res.status(500).render("error");
     }
-});
+};
 
-viewsRouter.get("/logout", (req, res) => {
+const logout = async (req, res) => {
     try {
         res.render("logout");
     } catch (error) {
         console.log(error);
         res.status(500).render("error");
     }
-});
+};
 
-viewsRouter.get("/profile", (req, res) => {
+const profile = async (req, res) => {
     try {
         res.render("profile");
     } catch (error) {
         console.log(error);
         res.status(500).render("error");
     }
-});
+};
 
-viewsRouter.get("/control-panel", (req, res) => {
+const controlPanel = async (req, res) => {
     try {
         res.render("control_panel");
     } catch (error) {
         console.log(error);
         res.status(500).render("error");
     }
-});
+};
+
+class ViewsRouter extends CustomRouter {
+    constructor() {
+        super();
+        this.init();
+    }
+
+    init = () => {
+        this.read("/", home);
+        this.read("/register", register);
+        this.read("/login", login);
+        this.read("/logout", logout);
+        this.read("/profile", profile);
+        this.read("/control-panel", controlPanel);
+    };
+}
+
+const viewsRouter = new ViewsRouter().getRouter();
 
 export default viewsRouter;
