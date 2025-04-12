@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { productsManager } from "../../data/managers/manager.mongo.js";
 import { pidParam } from "../../middlewares/params.mid.js";
+import passportCallback from "../../middlewares/passport_callback.mid.js";
 
 const productsRouter = Router();
 
@@ -13,6 +14,7 @@ productsRouter.param("pid", pidParam);
 
 productsRouter.get(
     "/",
+    passportCallback("current"),
     asyncHandler(async (req, res) => {
         const products = await productsManager.readAll();
         if (products.length === 0) {
@@ -26,6 +28,7 @@ productsRouter.get(
 
 productsRouter.get(
     "/:pid",
+    passportCallback("current"),
     asyncHandler(async (req, res) => {
         const { pid } = req.params;
         const product = await productsManager.readById({ _id: pid });
@@ -42,6 +45,7 @@ productsRouter.get(
 
 productsRouter.post(
     "/",
+    passportCallback("admin"),
     asyncHandler(async (req, res) => {
         // Todos los campos son obligatorios a excepción de thumbnails
         // El ID lo genera automaticamente NoSQL
@@ -84,6 +88,7 @@ productsRouter.post(
 
 productsRouter.put(
     "/:pid",
+    passportCallback("admin"),
     asyncHandler(async (req, res) => {
         const updatedProduct = await productsManager.updateById(
             req.params.pid,
@@ -103,11 +108,15 @@ productsRouter.put(
 
 productsRouter.delete(
     "/:pid",
+    passportCallback("admin"),
     asyncHandler(async (req, res) => {
-        const deleted = await productsManager.destroyById(req.params.pid);
+        const deleted = await productsManager.destroyById({
+            _id: req.params.pid,
+        });
+        console.log(deleted);
         if (!deleted) {
             return res.status(404).json({
-                error: "Error al eliminar el producto",
+                message: "Producto no encontrado",
             });
         }
         res.json({
