@@ -27,7 +27,14 @@ const findProfile = async () => {
             document.querySelector("#user-city").innerHTML = `${user.city}`;
             document.querySelector("#user-role").innerHTML = `${user.role}`;
         } else {
-            alert(result.error);
+            if (!localStorage.getItem("token")) {
+                // Si no hay token, redirigir a la página de login
+                alert(`No hay usuarios logeados`);
+                window.location.replace("/login");
+            } else {
+                alert(`Error: ${result.message}`);
+                window.location.replace("/login");
+            }
         }
     } catch (error) {}
 };

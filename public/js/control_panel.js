@@ -39,19 +39,26 @@ const showMenu = async () => {
                 </div>
             `;
         } else {
-            // Mensaje de error si no tiene permisos
-            panelDiv.innerHTML = `
-                <div class="alert alert-danger" role="alert">
-                    El usuario no tiene permisos para acceder al panel de control.
-                </div>
-            `;
+            if (!localStorage.getItem("token")) {
+                // Si no hay token, redirigir a la página de login
+                alert(`No hay usuarios logeados`);
+                window.location.replace("/login");
+            } else {
+                // Mensaje de error si no tiene permisos
+                panelDiv.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        El usuario no tiene permisos para acceder al panel de control.
+                    </div>
+                `;
+            }
         }
     } catch (error) {
+        // Si no hay token, redirigir a la página de login
         document.querySelector("#control-panel-div").innerHTML = `
-            <div class="alert alert-warning" role="alert">
-                Hubo un error al cargar el panel. Intentalo de nuevo más tarde.
-            </div>
-        `;
+                <div class="alert alert-warning" role="alert">
+                    Hubo un error al cargar el panel. Intentalo de nuevo más tarde.
+                </div>
+            `;
         console.error("Error al cargar el panel de control:", error);
     }
 };

@@ -30,7 +30,7 @@ const setupPolicies = (policies) => async (req, res, next) => {
         // Si el recurso es privado y no tengo token, retorno 401
         const token = req?.cookies?.token;
         if (!token) {
-            return res.json401();
+            return res.json401("No token provided");
         }
 
         const data = verifyToken(token);
