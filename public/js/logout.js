@@ -24,7 +24,7 @@ const logOut = async () => {
             alert(result.message);
         }
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         alert("Error en el logout!");
     }
 };
