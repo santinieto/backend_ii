@@ -10,7 +10,7 @@ const showMenu = async () => {
         };
         const response = await fetch(url, opts);
         const result = await response.json();
-        console.log(result);
+        // console.log(result);
 
         // Gestiono el resultado
         if (result.status === "success") {
