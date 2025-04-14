@@ -1,6 +1,6 @@
 import Manager from "./manager.mongo.js";
 import Cart from "../models/carts.model.js";
-import { productsManager } from "./manager.mongo.js";
+import { productsManager } from "./products.mongo.js";
 
 class CartsManager extends Manager {
     constructor() {
