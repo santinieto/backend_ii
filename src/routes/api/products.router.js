@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { productsManager } from "../../data/managers/manager.mongo.js";
+import { productsManager } from "../../data/managers/products.mongo.js";
 import { pidParam } from "../../middlewares/params.mid.js";
 import passportCallback from "../../middlewares/passport_callback.mid.js";
 
