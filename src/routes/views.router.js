@@ -1,60 +1,14 @@
 import CustomRouter from "./custom.router.js";
 import { cartsManager } from "../data/managers/carts.mongo.js";
 import { productsManager } from "../data/managers/products.mongo.js";
-
-const home = async (req, res) => {
-    try {
-        res.render("home");
-    } catch (error) {
-        console.log(error);
-        res.status(500).render("error");
-    }
-};
-
-const register = async (req, res) => {
-    try {
-        res.render("register");
-    } catch (error) {
-        console.log(error);
-        res.status(500).render("error");
-    }
-};
-
-const login = async (req, res) => {
-    try {
-        res.render("login");
-    } catch (error) {
-        console.log(error);
-        res.status(500).render("error");
-    }
-};
-
-const logout = async (req, res) => {
-    try {
-        res.render("logout");
-    } catch (error) {
-        console.log(error);
-        res.status(500).render("error");
-    }
-};
-
-const profile = async (req, res) => {
-    try {
-        res.render("profile");
-    } catch (error) {
-        console.log(error);
-        res.status(500).render("error");
-    }
-};
-
-const controlPanel = async (req, res) => {
-    try {
-        res.render("control_panel");
-    } catch (error) {
-        console.log(error);
-        res.status(500).render("error");
-    }
-};
+import {
+    home,
+    register,
+    login,
+    logout,
+    profile,
+    controlPanel,
+} from "../controllers/views.controller.js"; // Importamos los controladores
 
 class ViewsRouter extends CustomRouter {
     constructor() {
