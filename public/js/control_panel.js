@@ -5,12 +5,11 @@ const showMenu = async () => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
         };
         const response = await fetch(url, opts);
         const result = await response.json();
-        console.log(result);
+        // console.log(result);
 
         const panelDiv = document.querySelector("#control-panel-div");
 
@@ -39,19 +38,33 @@ const showMenu = async () => {
                 </div>
             `;
         } else {
-            // Mensaje de error si no tiene permisos
-            panelDiv.innerHTML = `
-                <div class="alert alert-danger" role="alert">
-                    El usuario no tiene permisos para acceder al panel de control.
-                </div>
-            `;
+            if (result.code === 401) {
+                // Si no hay token, redirigir a la página de login
+                alert(`No hay usuarios logeados`);
+                window.location.replace("/login");
+            } else if (result.code === 403) {
+                // Mensaje de error si no tiene permisos
+                panelDiv.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        El usuario no tiene permisos para acceder al panel de control.
+                    </div>
+                `;
+            } else {
+                // Mensaje de error genérico
+                panelDiv.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        Hubo un error al cargar el panel. Intentalo de nuevo más tarde.
+                    </div>
+                `;
+            }
         }
     } catch (error) {
+        // Si no hay token, redirigir a la página de login
         document.querySelector("#control-panel-div").innerHTML = `
-            <div class="alert alert-warning" role="alert">
-                Hubo un error al cargar el panel. Intentalo de nuevo más tarde.
-            </div>
-        `;
+                <div class="alert alert-warning" role="alert">
+                    Hubo un error al cargar el panel. Intentalo de nuevo más tarde.
+                </div>
+            `;
         console.error("Error al cargar el panel de control:", error);
     }
 };

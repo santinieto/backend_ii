@@ -29,6 +29,6 @@ document
             alert("Registro exitoso!");
             window.location.href = "/login";
         } else {
-            alert(result.error);
+            alert(result.message);
         }
     });

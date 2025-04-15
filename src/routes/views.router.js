@@ -1,62 +1,32 @@
-import { Router } from "express";
+import CustomRouter from "./custom.router.js";
 import { cartsManager } from "../data/managers/carts.mongo.js";
 import { productsManager } from "../data/managers/products.mongo.js";
+import {
+    home,
+    register,
+    login,
+    logout,
+    profile,
+    controlPanel,
+} from "../controllers/views.controller.js"; // Importamos los controladores
 
-const viewsRouter = Router();
-
-viewsRouter.get("/", (req, res) => {
-    try {
-        res.render("home");
-    } catch (error) {
-        console.log(error);
-        res.status(500).render("error");
+class ViewsRouter extends CustomRouter {
+    constructor() {
+        super();
+        this.init();
     }
-});
 
-viewsRouter.get("/register", (req, res) => {
-    try {
-        res.render("register");
-    } catch (error) {
-        console.log(error);
-        res.status(500).render("error");
-    }
-});
+    init = () => {
+        this.read("/", [], home);
+        this.read("/register", [], register);
+        this.read("/login", [], login);
+        this.read("/logout", [], logout);
+        this.read("/profile", [], profile);
+        this.read("/control-panel", [], controlPanel);
+    };
+}
 
-viewsRouter.get("/login", (req, res) => {
-    try {
-        res.render("login");
-    } catch (error) {
-        console.log(error);
-        res.status(500).render("error");
-    }
-});
-
-viewsRouter.get("/logout", (req, res) => {
-    try {
-        res.render("logout");
-    } catch (error) {
-        console.log(error);
-        res.status(500).render("error");
-    }
-});
-
-viewsRouter.get("/profile", (req, res) => {
-    try {
-        res.render("profile");
-    } catch (error) {
-        console.log(error);
-        res.status(500).render("error");
-    }
-});
-
-viewsRouter.get("/control-panel", (req, res) => {
-    try {
-        res.render("control_panel");
-    } catch (error) {
-        console.log(error);
-        res.status(500).render("error");
-    }
-});
+const viewsRouter = new ViewsRouter().getRouter();
 
 viewsRouter.get("/products", async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;

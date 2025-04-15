@@ -1,6 +1,6 @@
 import express from "express";
 import { engine } from "express-handlebars";
-import "dotenv/config.js";
+import "./helpers/set_env.helper.js";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import dbConnect from "./helpers/db_connect.helper.js";
@@ -9,7 +9,8 @@ import errorHandler from "./middlewares/error_handler.js";
 import pathHandler from "./middlewares/path_handler.mid.js";
 
 // Variables globabes
-const PORT = 8080;
+const PORT = process.env.PORT || 8080; // Puerto por defecto
+const ENV = process.env.ENV || "prd"; // Ambiente por defecto
 
 // Creo el objeto Server
 const server = express();
@@ -17,7 +18,9 @@ const ready = async () => {
     // Conecto a la base de datos
     await dbConnect();
     // Inicializo el servidor
-    console.log(`Servidor inicializado en el http://localhost:${PORT}`);
+    console.log(
+        `Servidor inicializado en el http://localhost:${PORT} - Ambiente ${ENV}`
+    );
 };
 
 // Configuraciones del servidor

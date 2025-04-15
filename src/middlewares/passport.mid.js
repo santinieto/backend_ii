@@ -26,13 +26,15 @@ passport.use(
                 }
 
                 /* Si no existe, lo creo */
-                const { first_name, last_name, role } = req.body;
+                const { first_name, last_name, role, city } = req.body;
+                const normalizedRole = role?.toUpperCase() || "USER";
                 const newUser = {
                     first_name,
                     last_name,
                     email,
                     password: createHash(password),
-                    role: role.toUpperCase() || "USER",
+                    role: normalizedRole,
+                    city,
                 };
                 const result = await usersManager.createOne(newUser);
 
