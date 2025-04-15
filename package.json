@@ -5,14 +5,17 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "node ./app.js",
-    "dev": "node --watch ./app.js"
+    "start": "node ./src/app.js",
+    "dev": "node --watch ./src/app.js --env dev",
+    "tst": "node --watch ./src/app.js --env tst",
+    "prd": "node ./src/app.js --env prd"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "commander": "^13.1.0",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
