@@ -5,7 +5,6 @@ const logOut = async () => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
         };
         const response = await fetch(url, opts);

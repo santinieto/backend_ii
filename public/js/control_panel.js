@@ -5,12 +5,11 @@ const showMenu = async () => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
         };
         const response = await fetch(url, opts);
         const result = await response.json();
-        console.log(result);
+        // console.log(result);
 
         const panelDiv = document.querySelector("#control-panel-div");
 
@@ -39,15 +38,22 @@ const showMenu = async () => {
                 </div>
             `;
         } else {
-            if (!localStorage.getItem("token")) {
+            if (result.code === 401) {
                 // Si no hay token, redirigir a la página de login
                 alert(`No hay usuarios logeados`);
                 window.location.replace("/login");
-            } else {
+            } else if (result.code === 403) {
                 // Mensaje de error si no tiene permisos
                 panelDiv.innerHTML = `
                     <div class="alert alert-danger" role="alert">
                         El usuario no tiene permisos para acceder al panel de control.
+                    </div>
+                `;
+            } else {
+                // Mensaje de error genérico
+                panelDiv.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        Hubo un error al cargar el panel. Intentalo de nuevo más tarde.
                     </div>
                 `;
             }

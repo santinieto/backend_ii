@@ -54,7 +54,7 @@ const setupPolicies = (policies) => async (req, res, next) => {
             req.user = data;
             return next();
         } else {
-            res.json401();
+            res.json403();
         }
     } catch (error) {
         next(error);
