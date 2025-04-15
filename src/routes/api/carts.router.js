@@ -16,7 +16,7 @@ class CartsRouter extends CustomRouter {
     }
 
     init = () => {
-        this.create("/create", ["user"], createOne);
+        this.create("/create", ["user", "admin"], createOne);
         this.read("/", ["admin"], readAll);
         this.read("/:cid", ["user", "admin"], readOne);
         this.update("/:cid", ["user", "admin"], updateOne);

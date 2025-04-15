@@ -1,4 +1,11 @@
-import { cartsManager } from "../data/managers/carts.mongo.js";
+import {
+    createCartService,
+    readAllService,
+    readOneService,
+    addProductToCartService,
+    updateOneService,
+    deleteOneService,
+} from "../services/carts.service.js";
 
 export const createOne = async (req, res) => {
     const { products } = req.body;
@@ -7,7 +14,7 @@ export const createOne = async (req, res) => {
         res.json400("El campo 'products' debe ser un arreglo válido.");
     }
 
-    const newCart = await cartsManager.createCart(products);
+    const newCart = await createCartService(products);
     if (!newCart) {
         res.json500("Error al crear el carrito.");
     }
@@ -16,7 +23,8 @@ export const createOne = async (req, res) => {
 };
 
 export const readAll = async (req, res) => {
-    const carts = await cartsManager.readAll();
+    const carts = await readAllService();
+    console.log(carts);
     if (carts.length === 0) {
         res.json404("No se encontraron carritos.");
     }
@@ -25,7 +33,7 @@ export const readAll = async (req, res) => {
 
 export const readOne = async (req, res) => {
     const { cid } = req.params;
-    const cart = await cartsManager.readById({ _id: cid });
+    const cart = await readOneService(cid);
 
     if (!cart) {
         res.json404();
@@ -36,11 +44,7 @@ export const readOne = async (req, res) => {
 
 export const addProductToCart = async (req, res) => {
     const { cart_id, product_id, quantity } = req.body;
-    const result = await cartsManager.addProductToCart(
-        cart_id,
-        product_id,
-        quantity
-    );
+    const result = await addProductToCartService(cart_id, product_id, quantity);
 
     if (result.status === "error") {
         res.json400(result.message);
@@ -53,7 +57,7 @@ export const updateOne = async (req, res) => {
     const { cid } = req.params;
     const { products } = req.body;
 
-    const result = await cartsManager.updateCart(cid, products);
+    const result = await updateOneService(cid, products);
     if (result.status === "error") {
         res.json400(result.message);
     }
@@ -63,7 +67,7 @@ export const updateOne = async (req, res) => {
 
 export const deleteOne = async (req, res) => {
     const { cid } = req.params;
-    const deleted = await cartsManager.destroyById(cid);
+    const deleted = await deleteOneService(cid);
     if (!deleted) {
         res.json404("No se encontró el carrito.");
     }

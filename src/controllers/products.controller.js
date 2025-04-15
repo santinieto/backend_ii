@@ -1,7 +1,13 @@
-import { productsManager } from "../data/managers/products.mongo.js";
+import {
+    createOneService,
+    deleteOneService,
+    readAllService,
+    readOneService,
+    updateOneService,
+} from "../services/products.service.js";
 
 export const readAll = async (req, res) => {
-    const products = await productsManager.readAll();
+    const products = await readAllService();
     if (products.length === 0) {
         res.json404();
     }
@@ -10,7 +16,7 @@ export const readAll = async (req, res) => {
 
 export const readOne = async (req, res) => {
     const { pid } = req.params;
-    const product = await productsManager.readById({ _id: pid });
+    const product = await readOneService(pid);
 
     if (!product) {
         res.json404();
@@ -42,7 +48,7 @@ export const createOne = async (req, res) => {
         res.json400();
     }
 
-    const newProduct = await productsManager.createOne(req.body);
+    const newProduct = await createOneService(req.body);
     if (!newProduct) {
         res.json500("Error al crear el producto");
     }
@@ -51,10 +57,7 @@ export const createOne = async (req, res) => {
 };
 
 export const updateOne = async (req, res) => {
-    const updatedProduct = await productsManager.updateById(
-        req.params.pid,
-        req.body
-    );
+    const updatedProduct = await updateOneService(req.params.pid, req.body);
     if (!updatedProduct) {
         res.json400("Error al actualizar el producto");
     }
@@ -63,7 +66,7 @@ export const updateOne = async (req, res) => {
 };
 
 export const deleteOne = async (req, res) => {
-    const deleted = await productsManager.destroyById({
+    const deleted = await deleteOneService({
         _id: req.params.pid,
     });
     if (!deleted) {
