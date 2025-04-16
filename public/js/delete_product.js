@@ -98,14 +98,52 @@ const showProductList = (productList, productsDiv) => {
     select.addEventListener("change", (e) => {
         const selectedProduct = productList[e.target.value];
         productInfoDiv.innerHTML = `
-                    <h5>Información del Producto</h5>
-                    <p><strong>ID:</strong> ${selectedProduct._id}</p>
-                    <p><strong>Nombre:</strong> ${selectedProduct.name}</p>
-                    <p><strong>Precio:</strong> ${selectedProduct.price}</p>
-                    <p><strong>Descripción:</strong> ${
+        <div class="card mt-3 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Información del Producto</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>ID:</strong> ${
+                        selectedProduct._id
+                    }</li>
+                    <li class="list-group-item"><strong>Código:</strong> ${
+                        selectedProduct.code
+                    }</li>
+                    <li class="list-group-item"><strong>Nombre:</strong> ${
+                        selectedProduct.name
+                    }</li>
+                    <li class="list-group-item"><strong>Precio:</strong> $${
+                        selectedProduct.price
+                    }</li>
+                    <li class="list-group-item"><strong>Descuento:</strong> ${
+                        selectedProduct.discount
+                    }%</li>
+                    <li class="list-group-item"><strong>Categoría:</strong> ${
+                        selectedProduct.category
+                    }</li>
+                    <li class="list-group-item"><strong>Descripción:</strong> ${
                         selectedProduct.description || "Sin descripción"
-                    }</p>
-                `;
+                    }</li>
+                    <li class="list-group-item"><strong>Stock:</strong> ${
+                        selectedProduct.stock
+                    }</li>
+                    <li class="list-group-item"><strong>Estado:</strong> ${
+                        selectedProduct.status
+                    }</li>
+                    <li class="list-group-item"><strong>Creado el:</strong> ${new Date(
+                        selectedProduct.createdAt
+                    ).toLocaleString()}</li>
+                    <li class="list-group-item"><strong>Actualizado el:</strong> ${new Date(
+                        selectedProduct.updatedAt
+                    ).toLocaleString()}</li>
+                    <li class="list-group-item"><strong>Thumbnails:</strong> ${
+                        selectedProduct.thumbnails
+                    }</li>
+                </ul>
+            </div>
+        </div>
+    `;
         addDeleteButton(selectedProduct._id, productInfoDiv); // Agregar botón de eliminar
     });
 
@@ -116,8 +154,11 @@ const showProductList = (productList, productsDiv) => {
 };
 
 const addDeleteButton = (productID, productInfoDiv) => {
+    const buttonWrapper = document.createElement("div");
+    buttonWrapper.classList.add("d-flex", "justify-content-end", "mt-3");
+
     const deleteButton = document.createElement("button");
-    deleteButton.classList.add("btn", "btn-danger", "mt-3");
+    deleteButton.classList.add("btn", "btn-danger");
     deleteButton.textContent = "Eliminar Producto";
 
     deleteButton.addEventListener("click", async () => {
@@ -133,11 +174,12 @@ const addDeleteButton = (productID, productInfoDiv) => {
 
         if (result.code === 200) {
             alert("Producto eliminado con éxito.");
-            window.location.replace("/products"); // Redirigir a la lista de productos
+            window.location.replace("/products");
         } else {
             alert("Error al eliminar el producto.");
         }
     });
 
-    productInfoDiv.appendChild(deleteButton);
+    buttonWrapper.appendChild(deleteButton);
+    productInfoDiv.appendChild(buttonWrapper);
 };

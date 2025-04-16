@@ -111,41 +111,106 @@ const addUpdateProductForm = (productoInfo, productInfoDiv) => {
     productInfoDiv.innerHTML = ""; // Limpiar contenido previo
 
     const form = document.createElement("form");
-    form.classList.add("p-3", "border", "rounded", "bg-light");
+    form.classList.add("card", "shadow", "border-0");
 
-    // Nombre
-    const nameGroup = document.createElement("div");
-    nameGroup.classList.add("mb-3");
-    nameGroup.innerHTML = `
-        <label for="product-name" class="form-label">Nombre del producto</label>
-        <input type="text" class="form-control" id="product-name" value="${productoInfo.name}" required>
+    // Título del formulario
+    const title = document.createElement("div");
+    title.classList.add("card-header", "bg-primary", "text-white");
+    title.textContent = "Información del Producto";
+    form.appendChild(title);
+
+    const formBody = document.createElement("div");
+    formBody.classList.add("card-body");
+
+    // ID
+    formBody.innerHTML += `
+        <div class="mb-3">
+            <label for="product-id" class="form-label">ID del producto</label>
+            <input type="text" class="form-control" id="product-id" value="${
+                productoInfo._id
+            }" disabled>
+        </div>
+        <div class="mb-3">
+            <label for="product-code" class="form-label">Código del producto</label>
+            <input type="text" class="form-control" id="product-code" value="${
+                productoInfo.code
+            }" disabled>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Fecha de creación</label>
+            <input type="text" class="form-control" value="${new Date(
+                productoInfo.createdAt
+            ).toLocaleString()}" disabled>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Última actualización</label>
+            <input type="text" class="form-control" value="${new Date(
+                productoInfo.updatedAt
+            ).toLocaleString()}" disabled>
+        </div>
+        <div class="mb-3">
+            <label for="product-name" class="form-label">Nombre del producto</label>
+            <input type="text" class="form-control" id="product-name" value="${
+                productoInfo.name
+            }" required>
+        </div>
+        <div class="mb-3">
+            <label for="product-price" class="form-label">Precio</label>
+            <input type="number" class="form-control" id="product-price" value="${
+                productoInfo.price
+            }" step="0.01" required>
+        </div>
+        <div class="mb-3">
+            <label for="product-discount" class="form-label">Descuento</label>
+            <input type="number" class="form-control" id="product-discount" value="${
+                productoInfo.discount
+            }" step="0.01">
+        </div>
+        <div class="mb-3">
+            <label for="product-category" class="form-label">Categoría</label>
+            <input type="text" class="form-control" id="product-category" value="${
+                productoInfo.category
+            }" required>
+        </div>
+        <div class="mb-3">
+            <label for="product-stock" class="form-label">Stock</label>
+            <input type="number" class="form-control" id="product-stock" value="${
+                productoInfo.stock
+            }" required>
+        </div>
+        <div class="mb-3">
+            <label for="product-thumbnail" class="form-label">Link de imagen</label>
+            <input type="text" class="form-control" id="product-thumbnail" value="${
+                productoInfo.thumbnails
+            }">
+        </div>
+        <div class="mb-3">
+            <label for="product-description" class="form-label">Descripción</label>
+            <textarea class="form-control" id="product-description" rows="3" required>${
+                productoInfo.description
+            }</textarea>
+        </div>
+        <div class="form-check mb-3">
+            <input type="checkbox" class="form-check-input" id="product-status" ${
+                productoInfo.status ? "checked" : ""
+            }>
+            <label class="form-check-label" for="product-status">Activo</label>
+        </div>
     `;
-    form.appendChild(nameGroup);
 
-    // Precio
-    const priceGroup = document.createElement("div");
-    priceGroup.classList.add("mb-3");
-    priceGroup.innerHTML = `
-        <label for="product-price" class="form-label">Precio</label>
-        <input type="number" class="form-control" id="product-price" value="${productoInfo.price}" step="0.01" required>
-    `;
-    form.appendChild(priceGroup);
+    // Footer con botón
+    const formFooter = document.createElement("div");
+    formFooter.classList.add("card-footer", "text-end");
 
-    // Descripción
-    const descriptionGroup = document.createElement("div");
-    descriptionGroup.classList.add("mb-3");
-    descriptionGroup.innerHTML = `
-        <label for="product-description" class="form-label">Descripción</label>
-        <textarea class="form-control" id="product-description" rows="3" required>${productoInfo.description}</textarea>
-    `;
-    form.appendChild(descriptionGroup);
-
-    // Botón de envío
     const submitBtn = document.createElement("button");
     submitBtn.type = "submit";
     submitBtn.classList.add("btn", "btn-primary");
     submitBtn.textContent = "Actualizar producto";
-    form.appendChild(submitBtn);
+    formFooter.appendChild(submitBtn);
+
+    // Añadir secciones al formulario
+    form.appendChild(formBody);
+    form.appendChild(formFooter);
 
     // Evento de envío
     form.addEventListener("submit", async (e) => {
@@ -156,6 +221,14 @@ const addUpdateProductForm = (productoInfo, productInfoDiv) => {
             name: document.getElementById("product-name").value,
             price: parseFloat(document.getElementById("product-price").value),
             description: document.getElementById("product-description").value,
+            code: productoInfo.code,
+            category: document.getElementById("product-category").value,
+            stock: parseInt(document.getElementById("product-stock").value),
+            discount: parseFloat(
+                document.getElementById("product-discount").value
+            ),
+            thumbnails: document.getElementById("product-thumbnail").value,
+            status: document.getElementById("product-status").checked,
         };
 
         try {
@@ -170,7 +243,7 @@ const addUpdateProductForm = (productoInfo, productInfoDiv) => {
             const result = await response.json();
             if (result.code === 200) {
                 alert("Producto actualizado correctamente.");
-                window.location.replace("/products"); // Redirigir a la lista de productos
+                window.location.replace("/products");
             } else {
                 alert("Error al actualizar el producto.");
                 console.error(result);
