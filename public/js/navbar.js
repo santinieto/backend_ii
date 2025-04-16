@@ -51,6 +51,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     function guestLinks() {
         return `
             <li class="nav-item">
+                <a class="nav-link" href="/products">Productos</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="/login">Ingresar</a>
             </li>
             <li class="nav-item">
@@ -61,8 +64,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function authenticatedLinks() {
         return `
-            <li class="nav-item">
-                <a class="nav-link" href="/products">Productos</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="productosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Productos
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="productosDropdown">
+                    <li><a class="dropdown-item" href="/products">Ver productos</a></li>
+                    <li><a class="dropdown-item" href="/add-product">Agregar producto</a></li>
+                    <li><a class="dropdown-item" href="/products/update">Actualizar producto</a></li>
+                    <li><a class="dropdown-item" href="/products/delete">Eliminar producto</a></li>
+                </ul>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/profile">Perfil</a>
