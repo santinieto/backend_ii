@@ -6,6 +6,7 @@ import {
     logout,
     profile,
     controlPanel,
+    navigationBar,
 } from "../../controllers/auth.controller.js"; // Importamos los controladores
 
 class AuthRouter extends CustomRouter {
@@ -39,6 +40,12 @@ class AuthRouter extends CustomRouter {
             ["admin"],
             passportCallback("admin"),
             controlPanel
+        );
+        this.read(
+            "/navbar",
+            ["public"],
+            passportCallback("current"),
+            navigationBar
         );
     };
 }

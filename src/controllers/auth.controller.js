@@ -49,3 +49,13 @@ export const controlPanel = async (req, res) => {
         status: "success",
     });
 };
+
+export const navigationBar = async (req, res) => {
+    const user = req.user;
+    res.status(200).json({
+        response: user,
+        method: req.method,
+        url: req.originalUrl,
+        status: "success",
+    });
+};
