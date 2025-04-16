@@ -97,19 +97,89 @@ const showProductList = (productList, productsDiv) => {
     // Escuchar el cambio de selección
     select.addEventListener("change", (e) => {
         const selectedProduct = productList[e.target.value];
-        productInfoDiv.innerHTML = `
-                    <h5>Información del Producto</h5>
-                    <p><strong>ID:</strong> ${selectedProduct._id}</p>
-                    <p><strong>Nombre:</strong> ${selectedProduct.name}</p>
-                    <p><strong>Precio:</strong> ${selectedProduct.price}</p>
-                    <p><strong>Descripción:</strong> ${
-                        selectedProduct.description || "Sin descripción"
-                    }</p>
-                `;
+        // Creo el formulario con los valores por defecto que tiene el producto
+        addUpdateProductForm(selectedProduct, productInfoDiv);
     });
 
     // Insertar en el DOM
     productsDiv.innerHTML = ""; // Limpiar contenido previo
     productsDiv.appendChild(select);
     productsDiv.appendChild(productInfoDiv);
+};
+
+const addUpdateProductForm = (productoInfo, productInfoDiv) => {
+    productInfoDiv.innerHTML = ""; // Limpiar contenido previo
+
+    const form = document.createElement("form");
+    form.classList.add("p-3", "border", "rounded", "bg-light");
+
+    // Nombre
+    const nameGroup = document.createElement("div");
+    nameGroup.classList.add("mb-3");
+    nameGroup.innerHTML = `
+        <label for="product-name" class="form-label">Nombre del producto</label>
+        <input type="text" class="form-control" id="product-name" value="${productoInfo.name}" required>
+    `;
+    form.appendChild(nameGroup);
+
+    // Precio
+    const priceGroup = document.createElement("div");
+    priceGroup.classList.add("mb-3");
+    priceGroup.innerHTML = `
+        <label for="product-price" class="form-label">Precio</label>
+        <input type="number" class="form-control" id="product-price" value="${productoInfo.price}" step="0.01" required>
+    `;
+    form.appendChild(priceGroup);
+
+    // Descripción
+    const descriptionGroup = document.createElement("div");
+    descriptionGroup.classList.add("mb-3");
+    descriptionGroup.innerHTML = `
+        <label for="product-description" class="form-label">Descripción</label>
+        <textarea class="form-control" id="product-description" rows="3" required>${productoInfo.description}</textarea>
+    `;
+    form.appendChild(descriptionGroup);
+
+    // Botón de envío
+    const submitBtn = document.createElement("button");
+    submitBtn.type = "submit";
+    submitBtn.classList.add("btn", "btn-primary");
+    submitBtn.textContent = "Actualizar producto";
+    form.appendChild(submitBtn);
+
+    // Evento de envío
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const updatedProduct = {
+            id: productoInfo._id,
+            name: document.getElementById("product-name").value,
+            price: parseFloat(document.getElementById("product-price").value),
+            description: document.getElementById("product-description").value,
+        };
+
+        try {
+            const response = await fetch(`/api/products/${productoInfo._id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(updatedProduct),
+            });
+
+            const result = await response.json();
+            if (result.code === 200) {
+                alert("Producto actualizado correctamente.");
+                window.location.replace("/products"); // Redirigir a la lista de productos
+            } else {
+                alert("Error al actualizar el producto.");
+                console.error(result);
+            }
+        } catch (error) {
+            console.error("Error al actualizar el producto:", error);
+            alert("Error de red al intentar actualizar el producto.");
+        }
+    });
+
+    productInfoDiv.appendChild(form);
 };
