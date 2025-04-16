@@ -71,8 +71,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <ul class="dropdown-menu" aria-labelledby="productosDropdown">
                     <li><a class="dropdown-item" href="/products">Ver productos</a></li>
                     <li><a class="dropdown-item" href="/add-product">Agregar producto</a></li>
-                    <li><a class="dropdown-item" href="/products/update">Actualizar producto</a></li>
-                    <li><a class="dropdown-item" href="/products/delete">Eliminar producto</a></li>
+                    <li><a class="dropdown-item" href="/update-product">Actualizar producto</a></li>
+                    <li><a class="dropdown-item" href="/delete-product">Eliminar producto</a></li>
                 </ul>
             </li>
             <li class="nav-item">

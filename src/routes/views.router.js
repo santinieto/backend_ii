@@ -9,6 +9,8 @@ import {
     controlPanel,
     allProducts,
     addProduct,
+    deleteProduct,
+    updateProduct,
     productInfo,
     cartInfo,
 } from "../controllers/views.controller.js"; // Importamos los controladores
@@ -28,6 +30,8 @@ class ViewsRouter extends CustomRouter {
         this.read("/control-panel", [], controlPanel);
         this.read("/products", [], allProducts);
         this.read("/add-product", [], addProduct);
+        this.read("/delete-product", [], deleteProduct);
+        this.read("/update-product", [], updateProduct);
         this.read("/products/:pid", [], productInfo);
         this.read("/carts/:cid", [], cartInfo);
     };

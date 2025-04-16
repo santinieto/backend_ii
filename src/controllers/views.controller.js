@@ -88,7 +88,25 @@ export const addProduct = async (req, res) => {
         console.log(error);
         res.status(500).render("error");
     }
-}
+};
+
+export const updateProduct = async (req, res) => {
+    try {
+        res.render("update_product");
+    } catch (error) {
+        console.log(error);
+        res.status(500).render("error");
+    }
+};
+
+export const deleteProduct = async (req, res) => {
+    try {
+        res.render("delete_product");
+    } catch (error) {
+        console.log(error);
+        res.status(500).render("error");
+    }
+};
 
 export const productInfo = async (req, res) => {
     try {

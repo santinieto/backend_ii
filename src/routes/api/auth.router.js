@@ -7,6 +7,8 @@ import {
     profile,
     controlPanel,
     navigationBar,
+    deleteProduct,
+    updateProduct,
 } from "../../controllers/auth.controller.js"; // Importamos los controladores
 
 class AuthRouter extends CustomRouter {
@@ -46,6 +48,18 @@ class AuthRouter extends CustomRouter {
             ["public"],
             passportCallback("current"),
             navigationBar
+        );
+        this.read(
+            "/delete-product",
+            ["public"],
+            passportCallback("admin"),
+            deleteProduct
+        );
+        this.read(
+            "/update-product",
+            ["public"],
+            passportCallback("admin"),
+            updateProduct
         );
     };
 }
