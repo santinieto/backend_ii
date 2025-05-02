@@ -1,108 +1,69 @@
-import { response, Router } from "express";
+import CustomRouter from "../custom.router.js";
 import passportCallback from "../../middlewares/passport_callback.mid.js"; // Importamos el middleware de passport
+import {
+    register,
+    login,
+    logout,
+    profile,
+    controlPanel,
+    navigationBar,
+    deleteProduct,
+    updateProduct,
+} from "../../controllers/auth.controller.js"; // Importamos los controladores
 
-const authRouter = Router();
-
-const register = async (req, res, next) => {
-    try {
-        res.status(201).json({
-            response: req.user._id, // Respondemos solo con el ID del usuario registrado
-            method: req.method,
-            url: req.originalUrl,
-            status: "success",
-        });
-    } catch (error) {
-        next(error);
+class AuthRouter extends CustomRouter {
+    constructor() {
+        super();
+        this.init();
     }
-};
 
-const login = async (req, res, next) => {
-    try {
-        res.cookie("token", req.token, {
-            maxAge: 1000 * 60 * 60, // 1 hora
-            httpOnly: true, // Solo el servidor puede acceder a la cookie
-        })
-            .status(200)
-            .json({
-                response: req.token, // Respondemos con el usuario de acceso
-                method: req.method,
-                url: req.originalUrl,
-                status: "success",
-            });
-    } catch (error) {
-        next(error);
-    }
-};
+    init = () => {
+        this.create(
+            "/register",
+            ["public"],
+            passportCallback("register"),
+            register
+        );
+        this.create("/login", ["public"], passportCallback("login"), login);
+        this.read(
+            "/profile",
+            ["user", "admin"],
+            passportCallback("current"),
+            profile
+        );
+        this.read(
+            "/logout",
+            ["public", "admin"],
+            passportCallback("current"),
+            logout
+        );
+        this.read(
+            "/control-panel",
+            ["admin"],
+            passportCallback("admin"),
+            controlPanel
+        );
+        this.read(
+            "/navbar",
+            ["public"],
+            passportCallback("current"),
+            navigationBar
+        );
+        this.read(
+            "/delete-product",
+            ["public"],
+            passportCallback("admin"),
+            deleteProduct
+        );
+        this.read(
+            "/update-product",
+            ["public"],
+            passportCallback("admin"),
+            updateProduct
+        );
+    };
+}
 
-const logout = async (req, res, next) => {
-    try {
-        res.clearCookie("token").status(200).json({
-            response: "Logout exitoso!",
-            method: req.method,
-            url: req.originalUrl,
-            status: "success",
-        });
-    } catch (error) {
-        next(error);
-    }
-};
-
-const profile = async (req, res, next) => {
-    try {
-        const user = req.user;
-        res.status(200).json({
-            response: user,
-            method: req.method,
-            url: req.originalUrl,
-            status: "success",
-        });
-    } catch (error) {
-        next(error);
-    }
-};
-
-const controlPanel = async (req, res, next) => {
-    try {
-        const user = req.user;
-        res.status(200).json({
-            response: user,
-            method: req.method,
-            url: req.originalUrl,
-            status: "success",
-        });
-    } catch (error) {
-        next(error);
-    }
-};
-
-authRouter.post(
-    "/register",
-    passportCallback("register"), // Implementamos la estrategia de registro
-    register
-);
-
-authRouter.post(
-    "/login",
-    passportCallback("login"), // Implementamos la estrategia de login
-    login
-);
-
-authRouter.get(
-    "/profile",
-    passportCallback("current"), // Implementamos la estrategia de JWT
-    profile
-);
-
-authRouter.get(
-    "/logout",
-    passportCallback("current"), // Implementamos la estrategia de JWT
-    logout
-);
-
-authRouter.get(
-    "/control-panel",
-    passportCallback("admin"), // Implementamos la estrategia de JWT
-    controlPanel
-);
+const authRouter = new AuthRouter().getRouter();
 
 export default authRouter;

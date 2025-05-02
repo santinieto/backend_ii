@@ -1,5 +1,4 @@
 import User from "../models/users.model.js";
-import Product from "../models/products.model.js";
 
 class Manager {
     constructor(model) {
@@ -10,7 +9,10 @@ class Manager {
     readBy = async (data) => await this.model.findOne(data).lean();
     readById = async (id) => await this.model.findOne({ _id: id }).lean();
     updateById = async (id, data) =>
-        await this.model.findOneAndUpdate({ _id: id }, data, { new: true });
+        await this.model.findOneAndUpdate({ _id: id }, data, {
+            new: true,
+            timestamps: true,
+        });
     destroyById = async (id) => await this.model.findOneAndDelete({ _id: id });
 }
 

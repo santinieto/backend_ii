@@ -28,6 +28,6 @@ document.querySelector("#login-form").addEventListener("submit", async (e) => {
         alert("Logeo exitoso!");
         window.location.href = "/profile";
     } else {
-        alert(result.error);
+        alert(result.message);
     }
 });

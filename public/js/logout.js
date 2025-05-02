@@ -5,7 +5,6 @@ const logOut = async () => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
         };
         const response = await fetch(url, opts);
@@ -21,7 +20,13 @@ const logOut = async () => {
             alert("Logout exitoso!");
             window.location.href = "/";
         } else {
-            alert(result.error);
+            if (!localStorage.getItem("token")) {
+                // Si no hay token, redirigir a la página de login
+                alert(`No hay usuarios logeados`);
+                window.location.replace("/login");
+            } else {
+                alert(result.message);
+            }
         }
     } catch (error) {
         // console.log(error);

@@ -44,11 +44,11 @@ const main = () => {
                 data = await response.json();
                 // console.log(data);
 
-                if (data.status !== "error") {
+                if (data.code === 200) {
                     alert("Producto agregado al carrito correctamente.");
                     window.location.replace(`/carts/${cartId}`);
                 } else {
-                    const error = new Error(data.error);
+                    const error = new Error(data.message);
                     error.status = data.status;
                     throw error;
                 }

@@ -5,7 +5,6 @@ const findProfile = async () => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
         };
         const response = await fetch(url, opts);
@@ -27,7 +26,14 @@ const findProfile = async () => {
             document.querySelector("#user-city").innerHTML = `${user.city}`;
             document.querySelector("#user-role").innerHTML = `${user.role}`;
         } else {
-            alert(result.error);
+            if (result.code === 401) {
+                // Si no hay token, redirigir a la página de login
+                alert(`No hay usuarios logeados`);
+                window.location.replace("/login");
+            } else {
+                alert(`Error: ${result.message}`);
+                window.location.replace("/login");
+            }
         }
     } catch (error) {}
 };

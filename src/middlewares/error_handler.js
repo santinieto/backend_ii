@@ -12,10 +12,11 @@ const errorHandler = (error, req, res, next) => {
             : 500;
 
     const data = {
-        status: "error",
         method: req.method,
         url: req.originalUrl,
-        error: message,
+        code: error.code,
+        status: "error",
+        message,
     };
     res.status(status).json(data);
 };
