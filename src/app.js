@@ -3,7 +3,7 @@ import { engine } from "express-handlebars";
 import "./helpers/set_env.helper.js";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
-import dbConnect from "./helpers/db_connect.helper.js";
+import { DatabaseConnect } from "./helpers/db_connect.helper.js";
 import appRouter from "./routes/app.router.js";
 import errorHandler from "./middlewares/error_handler.js";
 import pathHandler from "./middlewares/path_handler.mid.js";
@@ -16,7 +16,8 @@ const ENV = process.env.ENV || "prd"; // Ambiente por defecto
 const server = express();
 const ready = async () => {
     // Conecto a la base de datos
-    await dbConnect();
+    const db = new DatabaseConnect(process.env.MONGO_URI);
+    await db.connectToDatabase();
     // Inicializo el servidor
     console.log(
         `Servidor inicializado en el http://localhost:${PORT} - Ambiente ${ENV}`

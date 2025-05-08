@@ -1,12 +1,26 @@
 import { connect } from "mongoose";
 
-const dbConnect = async () => {
-    try {
-        await connect(process.env.MONGO_URI);
-        console.log("Conexion con MongoDB exitosa");
-    } catch (error) {
-        console.error("Error al establecer conexion con MongoDB:", error);
-    }
-};
+export class DatabaseConnect {
+    static instance;
 
-export default dbConnect;
+    constructor(url) {
+        if (DatabaseConnect.instance) {
+            return DatabaseConnect.instance;
+        }
+
+        this.url = url;
+        DatabaseConnect.instance = this;
+    }
+
+    async connectToDatabase() {
+        try {
+            await connect(this.url, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+            });
+            console.log("Conectado a MongoDB");
+        } catch (error) {
+            console.error("Error al conectar a MongoDB:", error);
+        }
+    }
+}
