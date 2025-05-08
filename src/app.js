@@ -1,6 +1,7 @@
 import express from "express";
 import { engine } from "express-handlebars";
 import "./helpers/set_env.helper.js";
+import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import { DatabaseConnect } from "./helpers/db_connect.helper.js";
@@ -29,6 +30,12 @@ server.use(express.json()); // Habilitar la lectura de cuerpos JSON
 server.use(morgan("dev")); // Logger para ver las peticiones en consola
 server.use(cookieParser(process.env.COOKIE_KEY)); // Middleware para leer cookies
 server.use(express.urlencoded({ extended: true })); // Middleware para leer datos de formularios
+server.use(
+    cors({
+        origin: true, // Cuando tengamos la uril del front se cambiar el true por la URL
+        credentials: true, // Habilita el envio de Cookies
+    })
+);
 
 // Configurar ruta publica
 server.use(express.static("public"));
