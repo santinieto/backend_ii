@@ -14,10 +14,7 @@ export class DatabaseConnect {
 
     async connectToDatabase() {
         try {
-            await connect(this.url, {
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-            });
+            await connect(this.url);
             console.log("Conectado a MongoDB");
         } catch (error) {
             console.error("Error al conectar a MongoDB:", error);
