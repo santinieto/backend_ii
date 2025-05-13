@@ -1,6 +1,6 @@
-import User from "../models/users.model.js";
+import User from "./models/users.model.js";
 
-class Manager {
+class MongoManager {
     constructor(model) {
         this.model = model;
     }
@@ -16,8 +16,8 @@ class Manager {
     destroyById = async (id) => await this.model.findOneAndDelete({ _id: id });
 }
 
-export default Manager;
+export default MongoManager;
 
-const usersManager = new Manager(User);
+const usersManager = new MongoManager(User);
 
 export { usersManager };

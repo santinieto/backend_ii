@@ -37,6 +37,7 @@ const AddProductForm = () => {
                 payload,
                 { withCredentials: true }
             );
+            console.log(res);
 
             if (res.status === 201 || res.data.code === 201) {
                 alert("Producto agregado correctamente");

@@ -1,4 +1,4 @@
-import { cartsManager } from "../data/managers/carts.mongo.js";
+import { cartsManager } from "../data/dao.factory.js";
 
 export const createCartService = async (products) => {
     return await cartsManager.createCart(products);

@@ -35,6 +35,7 @@ const setupPolicies = (policies) => async (req, res, next) => {
 
         const data = verifyToken(token);
         const { role, user_id } = data;
+        console.log("Data del token", role, user_id);
         if (!role || !user_id) {
             return res.json401();
         }

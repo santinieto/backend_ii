@@ -1,5 +1,5 @@
-import { cartsManager } from "../data/managers/carts.mongo.js";
-import { productsManager } from "../data/managers/products.mongo.js";
+import { cartsManager } from "../data/dao.factory.js";
+import { productsManager } from "../data/dao.factory.js";
 
 export const home = async (req, res) => {
     try {
