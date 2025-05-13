@@ -1,21 +1,29 @@
-import { productsManager } from "../data/managers/products.mongo.js";
+import { productsManager } from "../data/dao.factory.js";
+import ProductDTO from "../dto/products.dto.js";
+import {
+    readAllRepository,
+    readOneRepository,
+    createOneRepository,
+    updateOneRepository,
+    deleteOneRepository,
+} from "../repositories/products.repository.js";
 
 export const readAllService = async () => {
-    return await productsManager.readAll();
+    return await readAllRepository();
 };
 
 export const readOneService = async (pid) => {
-    return await productsManager.readById({ _id: pid });
+    return await readOneRepository(pid);
 };
 
 export const createOneService = async (product) => {
-    return await productsManager.createOne(product);
+    return await createOneRepository(product);
 };
 
 export const updateOneService = async (pid, product) => {
-    return await productsManager.updateById(pid, product);
+    return await updateOneRepository(pid, product);
 };
 
 export const deleteOneService = async (pid) => {
-    return await productsManager.destroyById(pid);
+    return await deleteOneRepository(pid);
 };

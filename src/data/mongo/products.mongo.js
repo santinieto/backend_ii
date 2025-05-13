@@ -1,7 +1,7 @@
-import Manager from "./manager.mongo.js";
-import Product from "../models/products.model.js";
+import MongoManager from "./manager.mongo.js";
+import Product from "./models/products.model.js";
 
-class ProductsManager extends Manager {
+class ProductsManager extends MongoManager {
     constructor() {
         super(Product);
     }
