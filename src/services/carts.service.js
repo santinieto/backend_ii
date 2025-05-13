@@ -1,7 +1,9 @@
 import { cartsManager } from "../data/dao.factory.js";
+import CartDTO from "../dto/carts.dto.js";
 
 export const createCartService = async (products) => {
-    return await cartsManager.createCart(products);
+    const data = new CartDTO({ products: products });
+    return await cartsManager.createCart(data);
 };
 
 export const readAllService = async () => {

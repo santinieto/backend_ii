@@ -43,16 +43,11 @@ class FileSystemManager {
 
     // Leer por ID
     readById = async (id) => {
-        return this.readBy({ id });
+        return this.readBy({ _id: id });
     };
 
     // Crear nuevo elemento
     createOne = async (newData) => {
-        newData = {
-            _id: uuidv4(),
-            ...newData,
-        };
-        console.log("New data:", newData);
         const data = await this.readAll();
         data.push(newData);
         await this.saveAll(data);
@@ -62,7 +57,7 @@ class FileSystemManager {
     // Actualizar por ID
     updateById = async (id, updates) => {
         const data = await this.readAll();
-        const index = data.findIndex((item) => item.id === id);
+        const index = data.findIndex((item) => item._id === id);
         if (index === -1) return null;
         data[index] = { ...data[index], ...updates };
         await this.saveAll(data);
@@ -72,7 +67,7 @@ class FileSystemManager {
     // Eliminar por ID
     destroyById = async (id) => {
         let data = await this.readAll();
-        const index = data.findIndex((item) => item.id === id);
+        const index = data.findIndex((item) => item._id === id);
         if (index === -1) return null;
         const [removed] = data.splice(index, 1);
         await this.saveAll(data);

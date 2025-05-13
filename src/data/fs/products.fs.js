@@ -9,12 +9,7 @@ class ProductsManager extends FileSystemManager {
     }
 
     createProduct = async (data) => {
-        const product = {
-            _id: uuidv4(),
-            ...data,
-        };
-        console.log(product);
-        await this.createOne(product);
+        await this.createOne(data);
         return product;
     };
 

@@ -1,6 +1,5 @@
 import FileSystemManager from "./manager.fs.js";
 import { productsManager } from "./products.fs.js";
-import { v4 as uuidv4 } from "uuid"; // para generar IDs únicos
 
 const cartsFilePath = "./data/carts.json";
 
@@ -9,11 +8,7 @@ class CartsManager extends FileSystemManager {
         super(cartsFilePath).ensureFileExists();
     }
 
-    createCart = async (products = []) => {
-        const cart = {
-            _id: uuidv4(),
-            products,
-        };
+    createCart = async (cart) => {
         await this.createOne(cart);
         return cart;
     };
@@ -36,7 +31,7 @@ class CartsManager extends FileSystemManager {
         }
 
         let productsTotal = cart.products || [];
-        const existingProduct = productsTotal.find((p) => p.id === product_id);
+        const existingProduct = productsTotal.find((p) => p._id === product_id);
 
         if (existingProduct) {
             existingProduct.quantity += quantity;
@@ -47,6 +42,7 @@ class CartsManager extends FileSystemManager {
         const updatedCart = await this.updateById(cart_id, {
             products: productsTotal,
         });
+        console.log(updatedCart);
 
         return {
             status: "success",

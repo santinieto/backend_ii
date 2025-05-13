@@ -1,17 +1,13 @@
 [
   {
-    "_id": "1b8c5cdb-7b45-4955-af1d-9a934d5fc446",
+    "_id": "1c764f01ff2d8ef04508bad8",
     "first_name": "admin",
     "last_name": "admin",
+    "date": null,
+    "city": null,
     "email": "admin.admin@gmail.com",
-    "password": "$2b$10$uIRPkjkk.Cz8c040nGWskeSI4bXVxWWBvQ7QaoI02KKT/vHmyUbmO",
+    "password": "$2b$10$5dyw9.lKMch/mVbq7DXUeOgZ1TXbLZ/s9lIYMMjA0nTgNiVfta/7G",
+    "avatar": "https://cdn-icons-png.flaticon.com/512/266/266033.png",
     "role": "ADMIN"
-  },
-  {
-    "_id": "b9b7507c-6195-4a0b-b450-cd2136e36a92",
-    "email": "santi.nieto@gmail.com",
-    "password": "$2b$10$SmKzlgFxiZ190UpxhmRwP.UjjvjiRZ1B8aqjfym6BT0ndGiVglb5C",
-    "role": "USER",
-    "city": "cordoba"
   }
 ]

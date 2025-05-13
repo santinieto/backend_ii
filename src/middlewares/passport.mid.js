@@ -4,6 +4,7 @@ import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 import { usersManager } from "../data/dao.factory.js";
 import { createHash, compareHash } from "../helpers/hash.helper.js";
 import { createToken } from "../helpers/token.helper.js";
+import UserDTO from "../dto/users.dto.js";
 
 passport.use(
     "register",
@@ -36,7 +37,8 @@ passport.use(
                     role: normalizedRole,
                     city,
                 };
-                const result = await usersManager.createOne(newUser);
+                const data = new UserDTO(newUser);
+                const result = await usersManager.createOne(data);
 
                 /* Sigo con la ejecucion */
                 return done(null, result);

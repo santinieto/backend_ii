@@ -1,6 +1,6 @@
 [
   {
-    "_id": "a661fba3-ee0f-461b-b736-fc2e5d31f18c",
+    "_id": "cf99cb2c7b36a7c14487b816",
     "name": "Parlante Bluetooth",
     "price": 500000,
     "discount": 5,
@@ -8,19 +8,19 @@
     "description": "Parlante inalámbrico con sonido envolvente",
     "thumbnails": "speaker.png",
     "stock": 20,
-    "code": "TEC-035",
+    "code": "TEC-036",
     "status": true
   },
   {
-    "_id": "1140982d-9c7f-42cc-965e-4465ac5fbcfc",
-    "name": "Notebook",
-    "price": 1000000,
-    "discount": 0,
-    "category": "Informatica",
-    "thumbnails": "-",
-    "stock": 10,
-    "code": "INF-14684",
-    "description": "-",
+    "_id": "d3271112f62078a43b91a496",
+    "name": "Parlante Bluetooth",
+    "price": 500000,
+    "discount": 5,
+    "category": "Tecnología",
+    "description": "Parlante inalámbrico con sonido envolvente",
+    "thumbnails": "speaker.png",
+    "stock": 20,
+    "code": "TEC-036",
     "status": true
   }
 ]

@@ -1,4 +1,5 @@
 import { productsManager } from "../data/dao.factory.js";
+import ProductDTO from "../dto/products.dto.js";
 
 export const readAllService = async () => {
     return await productsManager.readAll();
@@ -9,7 +10,8 @@ export const readOneService = async (pid) => {
 };
 
 export const createOneService = async (product) => {
-    return await productsManager.createOne(product);
+    const data = new ProductDTO(product);
+    return await productsManager.createOne(data);
 };
 
 export const updateOneService = async (pid, product) => {
