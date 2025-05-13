@@ -19,5 +19,14 @@
         "quantity": 7
       }
     ]
+  },
+  {
+    "_id": "a9dd0424d28ab6e75a51ffa8",
+    "products": [
+      {
+        "id": "3e12e49d3e684f58af1c6ef6",
+        "quantity": 2
+      }
+    ]
   }
 ]
