@@ -6,9 +6,8 @@ class CartsManager extends MongoManager {
     constructor() {
         super(Cart);
     }
-    createCart = async (products) => {
-        const cart = await this.model.create({ products: products });
-        return cart;
+    createCart = async (cart) => {
+        return await this.model.create({ products: cart.products });
     };
     addProductToCart = async (cart_id, product_id, quantity) => {
         const cart = await this.readById(cart_id);
