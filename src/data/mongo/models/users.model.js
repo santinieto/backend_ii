@@ -19,6 +19,8 @@ const schema = new Schema(
             enum: ["USER", "ADMIN", "PREM"],
             index: true,
         },
+        isVerified: { type: Boolean, default: false },
+        verificationCode: { type: String, required: true },
     },
     { timestamps: true }
 );

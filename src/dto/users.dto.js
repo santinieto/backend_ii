@@ -20,6 +20,8 @@ class UserDTO {
             data.avatar ||
             "https://cdn-icons-png.flaticon.com/512/266/266033.png";
         this.role = data.role || "USER";
+        this.isVerified = data.isVerified || false;
+        this.verificationCode = crypto.randomBytes(12).toString("hex");
 
         // Timestamps (si existen)
         if (PERSISTENCE !== "MONGO") {

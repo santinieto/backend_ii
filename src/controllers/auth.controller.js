@@ -1,6 +1,23 @@
+import { usersManager } from "../data/dao.factory.js";
+
 export const register = async (req, res) => {
     res.status(201).json({
         response: req.user._id, // Respondemos solo con el ID del usuario registrado
+        method: req.method,
+        url: req.originalUrl,
+        status: "success",
+    });
+};
+
+export const verifyAccount = async (req, res) => {
+    const { email, verificationCode } = req.body;
+    const user = await usersManager.readBy({ email, verificationCode });
+    if (!user) {
+        res.json401("Error al verificar cuenta");
+    }
+    await usersManager.updateById(user._id, { isVerified: true });
+    res.status(200).json({
+        response: `Usuario ${user._id} verificado correctamente`,
         method: req.method,
         url: req.originalUrl,
         status: "success",
