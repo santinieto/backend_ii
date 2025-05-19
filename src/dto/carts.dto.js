@@ -11,11 +11,13 @@ class CartDTO {
 
         // Normalizamos productos incluyendo el _id del subdocumento (si existe)
         this.products = Array.isArray(data.products)
-            ? data.products.map((prod) => ({
-                  id: prod.id,
-                  quantity: prod.quantity,
-                  _id: prod._id, // Esto es necesario para que se respete la estructura de Mongo
-              }))
+            ? data.products
+                  .filter((prod) => prod && prod.id && prod.quantity)
+                  .map((prod) => ({
+                      id: prod.id,
+                      quantity: prod.quantity,
+                      _id: prod._id,
+                  }))
             : [];
 
         // Timestamps: usamos los que vienen o generamos nuevos

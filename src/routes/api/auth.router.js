@@ -2,6 +2,7 @@ import CustomRouter from "../custom.router.js";
 import passportCallback from "../../middlewares/passport_callback.mid.js"; // Importamos el middleware de passport
 import {
     register,
+    verifyAccount,
     login,
     logout,
     profile,
@@ -24,6 +25,7 @@ class AuthRouter extends CustomRouter {
             passportCallback("register"),
             register
         );
+        this.create("/verify-account", ["public"], verifyAccount);
         this.create("/login", ["public"], passportCallback("login"), login);
         this.read(
             "/profile",

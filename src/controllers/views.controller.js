@@ -19,6 +19,15 @@ export const register = async (req, res) => {
     }
 };
 
+export const verifyAccount = async (req, res) => {
+    try {
+        res.render("verify_account");
+    } catch (error) {
+        console.log(error);
+        res.status(500).render("error");
+    }
+};
+
 export const login = async (req, res) => {
     try {
         res.render("login");

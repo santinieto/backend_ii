@@ -29,5 +29,9 @@ document.querySelector("#login-form").addEventListener("submit", async (e) => {
         window.location.href = "/profile";
     } else {
         alert(result.message);
+        // Se que no es lo idea hacer esto pero no tuve tiempo de implementar algo mejor
+        if (result.message === "La cuenta no está verificada") {
+            window.location.href = "/verify-account";
+        }
     }
 });

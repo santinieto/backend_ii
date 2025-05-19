@@ -5,6 +5,7 @@ import { usersManager } from "../data/dao.factory.js";
 import { createHash, compareHash } from "../helpers/hash.helper.js";
 import { createToken } from "../helpers/token.helper.js";
 import UserDTO from "../dto/users.dto.js";
+import { sendVerificationEmail } from "../helpers/email.helper.js";
 
 passport.use(
     "register",
@@ -29,6 +30,14 @@ passport.use(
                 /* Si no existe, lo creo */
                 const { first_name, last_name, role, city } = req.body;
                 const normalizedRole = role?.toUpperCase() || "USER";
+
+                let isVerified;
+                if (normalizedRole === "ADMIN") {
+                    isVerified = true;
+                } else {
+                    isVerified = false;
+                }
+
                 const newUser = {
                     first_name,
                     last_name,
@@ -36,12 +45,18 @@ passport.use(
                     password: createHash(password),
                     role: normalizedRole,
                     city,
+                    isVerified,
                 };
                 const data = new UserDTO(newUser);
-                const result = await usersManager.createOne(data);
+                const createdUser = await usersManager.createOne(data);
+
+                await sendVerificationEmail({
+                    email: createdUser.email,
+                    verificationCode: createdUser.verificationCode,
+                });
 
                 /* Sigo con la ejecucion */
-                return done(null, result);
+                return done(null, createdUser);
             } catch (error) {
                 return done(error);
             }
@@ -82,6 +97,14 @@ passport.use(
                     });
                 }
                 // console.log("Contraseña correcta");
+
+                /* Verifico si el usuario esta verificado */
+                if (!user.isVerified) {
+                    return done(null, null, {
+                        message: "La cuenta no está verificada",
+                        status: 401,
+                    });
+                }
 
                 /* Creo el token */
                 const data = {

@@ -3,6 +3,7 @@ import CustomRouter from "./custom.router.js";
 import {
     home,
     register,
+    verifyAccount,
     login,
     logout,
     profile,
@@ -24,6 +25,7 @@ class ViewsRouter extends CustomRouter {
     init = () => {
         this.read("/", [], home);
         this.read("/register", [], register);
+        this.read("/verify-account", [], verifyAccount);
         this.read("/login", [], login);
         this.read("/logout", [], logout);
         this.read("/profile", [], profile);
