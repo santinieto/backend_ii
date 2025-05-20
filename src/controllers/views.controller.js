@@ -1,5 +1,6 @@
 import { cartsManager } from "../data/dao.factory.js";
 import { productsManager } from "../data/dao.factory.js";
+import { ordersManager } from "../data/dao.factory.js";
 
 export const home = async (req, res) => {
     try {
@@ -136,13 +137,29 @@ export const productInfo = async (req, res) => {
 
 export const cartInfo = async (req, res) => {
     try {
-        const cart = await cartsManager.readById({ _id: req.params.cid });
+        const cart = await cartsManager.readById(req.params.cid);
 
         if (!cart) {
             res.status(404).render("error");
         }
 
         res.render("cart_detail", { cart });
+    } catch (error) {
+        console.log(error);
+        res.status(500).render("error");
+    }
+};
+
+export const orderInfo = async (req, res) => {
+    try {
+        const order = await ordersManager.readById(req.params.oid);
+        console.log(order);
+
+        if (!order) {
+            res.status(404).render("error");
+        }
+
+        res.render("order_detail", { order });
     } catch (error) {
         console.log(error);
         res.status(500).render("error");

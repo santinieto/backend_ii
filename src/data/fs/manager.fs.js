@@ -1,6 +1,5 @@
 import { promises as fs } from "fs";
 import path from "path";
-import { v4 as uuidv4 } from "uuid"; // para generar IDs únicos
 
 class FileSystemManager {
     constructor(filePath = "./data/users.json") {

@@ -24,12 +24,12 @@ class UserDTO {
         this.verificationCode = crypto.randomBytes(12).toString("hex");
 
         // Timestamps (si existen)
-        if (PERSISTENCE !== "MONGO") {
+        if (PERSISTENCE === "MONGO") {
             this.createdAt = data.createdAt;
             this.updatedAt = data.updatedAt;
         } else {
-            this.createdAt = Date.now();
-            this.updatedAt = Date.now();
+            this.createdAt = new Date();
+            this.updatedAt = new Date();
         }
     }
 }

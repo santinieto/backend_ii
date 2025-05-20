@@ -12,7 +12,7 @@
                 {{#each cart.products}}
                     <li>
                         Producto
-                        {{this._id}}
+                        {{this.id}}
                         - Cantidad
                         {{this.quantity}}
                     </li>
@@ -26,5 +26,12 @@
         style="justify-content: center"
     >
         <a href="/products" class="btn btn-primary mx-2">Volver</a>
+        <button
+            id="confirm-cart"
+            class="btn btn-success mx-2"
+            data-cart-id="{{cart._id}}"
+        >Confirmar compra</button>
     </div>
 </div>
+
+<script src="/js/cart_info.js"></script>

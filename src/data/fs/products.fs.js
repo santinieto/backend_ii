@@ -1,5 +1,4 @@
 import FileSystemManager from "./manager.fs.js";
-import { v4 as uuidv4 } from "uuid";
 
 const productsFilePath = "./data/products.json";
 
