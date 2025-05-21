@@ -76,6 +76,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </ul>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="/carts">Carritos</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="/profile">Perfil</a>
             </li>
             <li class="nav-item">

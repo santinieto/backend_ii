@@ -19,28 +19,41 @@ class CartService extends Service {
         const cartData = await this.repository.readOne(cartId);
         if (!cartData) return null;
 
-        // Agregamos detalle de productos
+        return await this.#buildDetailedCart(cartData);
+    }
+
+    async getAllDetailedCarts() {
+        const allCarts = await this.repository.readAll();
+        if (!allCarts) return [];
+
+        const detailedCarts = await Promise.all(
+            allCarts.map((cart) => this.#buildDetailedCart(cart))
+        );
+
+        return detailedCarts;
+    }
+
+    // Método privado para construir el detalle del carrito
+    async #buildDetailedCart(cartData) {
         const detailedProducts = await Promise.all(
             cartData.products.map(async (prod) => {
                 const product = await productService.readOne(prod.id);
+                const price = product?.price || 0;
+                const discount = product?.discount || 0;
+                const priceAtPurchase = price - (price * discount) / 100;
                 return {
                     id: prod.id,
                     name: product?.name || "Producto desconocido",
-                    price: product?.price || 0,
+                    price,
                     quantity: prod.quantity,
-                    discount: product.discount,
-                    priceAtPurchase:
-                        (product?.price || 0) -
-                        ((product?.price || 0) * product.discount) / 100,
-                    subtotal: (product?.price || 0) * prod.quantity,
+                    discount,
+                    priceAtPurchase,
+                    subtotal: priceAtPurchase * prod.quantity,
                 };
             })
         );
 
-        const total = detailedProducts.reduce(
-            (sum, p) => sum + p.priceAtPurchase,
-            0
-        );
+        const total = detailedProducts.reduce((sum, p) => sum + p.subtotal, 0);
 
         return {
             _id: cartData._id,

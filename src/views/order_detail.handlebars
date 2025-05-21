@@ -16,20 +16,24 @@
                         class="list-group-item d-flex justify-content-between align-items-center flex-wrap"
                     >
                         <div>
-                            <div><strong>{{this.name}}</strong>
+                            <div><strong>{{this.name}} ({{this.id}})</strong>
                                 x
                                 {{this.quantity}}</div>
 
                             {{#if this.discountAtPurchase}}
                                 <small class="text-muted">
+                                    ${{this.priceAtPurchase}}
                                     <s>${{this.price}}</s>
                                     (-{{this.discountAtPurchase}}% de descuento)
                                 </small>
+                            {{else}}
+                                ${{this.priceAtPurchase}}
                             {{/if}}
                         </div>
 
                         <span>
-                            ${{this.priceAtPurchase}}
+                            ${{this.subtotal}}
+
                         </span>
                     </li>
                 {{/each}}
