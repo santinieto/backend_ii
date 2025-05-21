@@ -1,15 +1,15 @@
 import crypto from "crypto";
+import { productService } from "../services/products.service.js";
+
 const { PERSISTENCE } = process.env;
 
 class CartDTO {
     constructor(data) {
-        // Asignar _id dependiendo de la persistencia
         this._id =
             PERSISTENCE !== "MONGO"
                 ? crypto.randomBytes(12).toString("hex")
                 : data._id;
 
-        // Normalizamos productos incluyendo el _id del subdocumento (si existe)
         this.products = Array.isArray(data.products)
             ? data.products
                   .filter((prod) => prod && prod.id && prod.quantity)
@@ -20,13 +20,14 @@ class CartDTO {
                   }))
             : [];
 
-        // Timestamps: usamos los que vienen o generamos nuevos
-        this.createdAt =
-            data.createdAt ||
-            (PERSISTENCE === "MONGO" ? new Date() : undefined);
-        this.updatedAt =
-            data.updatedAt ||
-            (PERSISTENCE === "MONGO" ? new Date() : undefined);
+        // Timestamps
+        if (PERSISTENCE === "MONGO") {
+            this.createdAt = data.createdAt;
+            this.updatedAt = data.updatedAt;
+        } else {
+            this.createdAt = new Date();
+            this.updatedAt = new Date();
+        }
     }
 }
 

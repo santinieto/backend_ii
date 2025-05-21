@@ -17,10 +17,12 @@ switch (PERSISTENCE) {
                 "./mongo/products.mongo.js"
             );
             const { cartsManager } = await import("./mongo/carts.mongo.js");
+            const { ordersManager } = await import("./mongo/orders.mongo.js");
             dao = {
                 usersManager,
                 productsManager,
                 cartsManager,
+                ordersManager,
             };
         }
         break;
@@ -33,10 +35,12 @@ switch (PERSISTENCE) {
             const { usersManager } = await import("./fs/users.fs.js");
             const { productsManager } = await import("./fs/products.fs.js");
             const { cartsManager } = await import("./fs/carts.fs.js");
+            const { ordersManager } = await import("./fs/orders.fs.js");
             dao = {
                 usersManager,
                 productsManager,
                 cartsManager,
+                ordersManager,
             };
         }
         break;
@@ -47,15 +51,17 @@ switch (PERSISTENCE) {
                 "./mongo/products.mongo.js"
             );
             const { cartsManager } = await import("./mongo/carts.mongo.js");
+            const { ordersManager } = await import("./mongo/orders.mongo.js");
             dao = {
                 usersManager,
                 productsManager,
                 cartsManager,
+                ordersManager,
             };
         }
         break;
 }
 
-const { usersManager, productsManager, cartsManager } = dao;
-export { usersManager, productsManager, cartsManager };
+const { usersManager, productsManager, cartsManager, ordersManager } = dao;
+export { usersManager, productsManager, cartsManager, ordersManager };
 export default dao;

@@ -1,5 +1,7 @@
 import { cartsManager } from "../data/dao.factory.js";
 import { productsManager } from "../data/dao.factory.js";
+import { ordersManager } from "../data/dao.factory.js";
+import { cartService } from "../services/carts.service.js";
 
 export const home = async (req, res) => {
     try {
@@ -108,6 +110,25 @@ export const updateProduct = async (req, res) => {
     }
 };
 
+export const allCarts = async (req, res) => {
+    try {
+        const carts = await cartService.getAllDetailedCarts();
+
+        if (!carts || carts.length === 0) {
+            return res
+                .status(404)
+                .render("error", { message: "No hay carritos disponibles." });
+        }
+
+        res.render("carts", { carts });
+    } catch (error) {
+        console.log(error);
+        res.status(500).render("error", {
+            message: "Error al obtener los carritos.",
+        });
+    }
+};
+
 export const deleteProduct = async (req, res) => {
     try {
         res.render("delete_product");
@@ -136,13 +157,29 @@ export const productInfo = async (req, res) => {
 
 export const cartInfo = async (req, res) => {
     try {
-        const cart = await cartsManager.readById({ _id: req.params.cid });
+        const cart = await cartService.getDetailedCart(req.params.cid);
 
         if (!cart) {
             res.status(404).render("error");
         }
 
         res.render("cart_detail", { cart });
+    } catch (error) {
+        console.log(error);
+        res.status(500).render("error");
+    }
+};
+
+export const orderInfo = async (req, res) => {
+    try {
+        const order = await ordersManager.readById(req.params.oid);
+        console.log(order);
+
+        if (!order) {
+            res.status(404).render("error");
+        }
+
+        res.render("order_detail", { order });
     } catch (error) {
         console.log(error);
         res.status(500).render("error");
