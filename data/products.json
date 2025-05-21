@@ -34,5 +34,19 @@
     "stock": 20,
     "code": "TEC-037",
     "status": true
+  },
+  {
+    "_id": "296ab84066aca54bc09f52e4",
+    "name": "Ojota",
+    "price": 20000,
+    "discount": 0,
+    "category": "Ropa",
+    "description": "Calzado de verano",
+    "thumbnails": "-",
+    "stock": 200,
+    "code": "ROP-001",
+    "status": true,
+    "createdAt": "2025-05-21T00:32:27.619Z",
+    "updatedAt": "2025-05-21T00:32:27.619Z"
   }
 ]

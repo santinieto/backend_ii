@@ -44,6 +44,15 @@
   },
   {
     "_id": "ed6df2474731f762a320cd34",
-    "products": []
+    "products": [
+      {
+        "id": "d3271112f62078a43b91a496",
+        "quantity": 1
+      },
+      {
+        "id": "296ab84066aca54bc09f52e4",
+        "quantity": 1
+      }
+    ]
   }
 ]

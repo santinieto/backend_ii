@@ -949,5 +949,26 @@
     "shippingAddress": {},
     "createdAt": "2025-05-20T01:50:28.834Z",
     "updatedAt": "2025-05-20T01:50:28.834Z"
+  },
+  {
+    "_id": "c376a09a10f6b889cddabc76",
+    "cart_id": "220cb16d691be14325de3a52",
+    "products": [
+      {
+        "id": "cf99cb2c7b36a7c14487b816",
+        "name": "Parlante Bluetooth",
+        "quantity": 1,
+        "price": 500000,
+        "discount": 5,
+        "priceAtPurchase": 475000,
+        "discountAtPurchase": 5
+      }
+    ],
+    "total": 475000,
+    "status": "confirmed",
+    "paymentMethod": "cash_on_delivery",
+    "shippingAddress": {},
+    "createdAt": "2025-05-21T00:31:39.869Z",
+    "updatedAt": "2025-05-21T00:31:39.869Z"
   }
 ]

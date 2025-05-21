@@ -157,7 +157,7 @@ export const productInfo = async (req, res) => {
 
 export const cartInfo = async (req, res) => {
     try {
-        const cart = await cartsManager.readById(req.params.cid);
+        const cart = await cartService.getDetailedCart(req.params.cid);
 
         if (!cart) {
             res.status(404).render("error");
